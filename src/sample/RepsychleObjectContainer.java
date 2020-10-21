@@ -7,21 +7,24 @@ import java.util.Collections;
 
 public class RepsychleObjectContainer {
     private int id; // This will be the Primary key
-    private String brandName, objectName, material, disposal;
+    private int resinIdCode;
+    private String brandName, objectName, material, disposal, ecoDoc;
     private Double ecoScore;
     //Name: Marker, Plastic, Recycle
-        // Later on, I will implement different lists so I can have the material name, ecoscore, disposal method
+        // Later on, I will implement different lists so I can have the material name, EcoScore, disposal method
     //As I am putting these into strings, I can create different Hashlists or arraylists to read out of later
     private final String nameRegEx = "[A-Z][a-zA-Z\\-\\s']";
 
 
-    public RepsychleObjectContainer(int id, String brandName, String objectName, String material, String disposal, Double ecoScore) {
+    public RepsychleObjectContainer(int id, int resinIdCode, String brandName, String objectName, String material, String disposal, Double ecoScore, String ecoDoc) {
         setId(id);
+        setResinIdCode(resinIdCode);
         setBrandName(brandName);
         setObjectName(objectName);
         setMaterial(material);
         setDisposal(disposal);
         setEcoScore(ecoScore);
+        setEcoDoc(ecoDoc);
 
 
 
@@ -36,7 +39,21 @@ public class RepsychleObjectContainer {
             this.id = id;
         }
        else {
-           throw new IllegalArgumentException("Please select an ID that is greater than 0");
+           throw new IllegalArgumentException("Please select an ID that is greater than 0!");
+        }
+    }
+
+    public int getResinIdCode() {
+        return resinIdCode;
+    }
+
+    public void setResinIdCode(int resinIdCode) {
+        if(resinIdCode >= 0 && resinIdCode <= 7) {
+            this.resinIdCode = resinIdCode;
+        }
+
+        else {
+            throw new IllegalArgumentException("Please enter a valid Resin ID Code from 0 to 7!");
         }
     }
 
@@ -135,7 +152,7 @@ public class RepsychleObjectContainer {
             this.objectName = objectName;
         }
         else {
-            throw new IllegalArgumentException("Please enter in a valid object name");
+            throw new IllegalArgumentException("Please enter in a valid object name!");
         }
     }
 
@@ -153,8 +170,6 @@ public class RepsychleObjectContainer {
 
     public void setMaterial(String material) {
         if(material.matches(nameRegEx)) {
-
-
             this.material = material;           // Validation for the Regex
         }
     }
@@ -168,14 +183,38 @@ public class RepsychleObjectContainer {
      */
 
     public void setDisposal(String disposal) {
-        this.disposal = disposal;
+        if(disposal.equalsIgnoreCase("Recycle") || disposal.equalsIgnoreCase("Garbage") || disposal.equalsIgnoreCase("Compost"))
+        {
+            this.disposal = disposal;
+        }
+        else {
+            throw new IllegalArgumentException("Please enter a disposal method that is either: Recycle, Garbage, Compost!");
+        }
     }
 
     public Double getEcoScore() {
         return ecoScore;
     }
 
-    public void setEcoScore(Double ecoScore) {
-        this.ecoScore = ecoScore;
+    public void setEcoScore (Double ecoScore) {
+        if (ecoScore >= 0.00 || ecoScore <= 100.00){
+            this.ecoScore = ecoScore;
+        }
+        else {
+            throw new IllegalArgumentException("Please enter an EcoScore between 0.00 and 100.00!");
+        }
+    }
+
+    public String getEcoDoc() {
+        return ecoDoc;
+    }
+
+    public void setEcoDoc(String ecoDoc) {
+        if(ecoDoc.matches(nameRegEx)) {
+            this.ecoDoc = ecoDoc;
+        }
+        else {
+            throw new IllegalArgumentException("Please enter a valid comment regarding the product!");
+        }
     }
 }
