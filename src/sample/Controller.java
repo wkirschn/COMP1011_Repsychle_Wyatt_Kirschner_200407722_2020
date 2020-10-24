@@ -29,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,8 +47,9 @@ public class Controller implements Initializable {
     @FXML
     private Spinner<Integer> resinSpinner;
 
+
     @FXML
-    private Label disposalLabel;
+    private ComboBox<String> disposalComboBox;
 
     @FXML
     private Label materialLabel;
@@ -58,21 +60,134 @@ public class Controller implements Initializable {
     @FXML
     private Label ecoScoreLabel;
 
+    @FXML
+    private Label infoLabel;
+
+    @FXML
+    private Label objectLabel;
+
+
 
     @FXML
     void submitButton(ActionEvent event) {
         System.out.println("Send!");
-       // RepsychleObjectContainer fillOut = new RepsychleObjectContainer(001, resinSpinner.getValue(), brandNameTextField.getText(),
-         //       productNameTextField.getText(), materialComboBox.getValue(), disposalComboBox.getValue(), "High", commentTextArea.getText());
-        System.out.println(brandNameTextField.getText());
-        System.out.println(productNameTextField.getText());
-        System.out.println(resinSpinner.getValue());
-        System.out.println(materialLabel.getText());
-        //System.out.println(disposalComboBox.getValue());
-        System.out.println(commentLabel.getText());
-        System.out.println(ecoScoreLabel.getText());
-       //RepsychleObjectContainer test = new RepsychleObjectContainer(001, resinSpinner.getValue(), brandNameTextField.getText(), productNameTextField.getText(), materialComboBox.getValue(), disposalComboBox.getValue(), 40.00, commentTextArea.getText());
-    //int id, int resinIdCode, String brandName, String objectName, String material, String disposal, Double ecoScore, String ecoDoc
+
+
+
+
+    }
+
+    public boolean inputValidation()
+    {
+        infoLabel.setTextFill(Color.RED);
+        if(brandNameTextField.getText().trim().isEmpty()) {
+        objectLabel.setText("Please enter a brand name!");
+        return false;
+        }
+        if(productNameTextField.getText().trim().isEmpty()) {
+            objectLabel.setText("Please enter a product name!");
+            return false;
+        }
+
+        if(materialLabel.getText().trim().isEmpty()){
+            objectLabel.setText("Please select a Resin ID!");
+            return false;
+        }
+        if(disposalComboBox.getValue().isEmpty()) {
+            objectLabel.setText("Please select a disposal method!");
+            return false;
+        }
+        if(commentLabel.getText().isEmpty()) {
+            objectLabel.setText("Please ensure a comment is passed!");
+            return false;
+        }
+        if(ecoScoreLabel.getText().isEmpty()) {
+            objectLabel.setText("Please ensure an EcoScore is Generated!");
+            return false;
+        }
+
+        else {
+            return true;
+        }
+    }
+
+    public void materialLoader(int resinID) {   // When it comes to creating an object, then I will collect the information to parse into the database
+        if (resinID >= 1 || resinID <= 7) {
+            if (resinID == 1) {
+                materialLabel.setText("PETE: Polyethylene Terephthalate");
+            }
+            if (resinID == 2) {
+                materialLabel.setText("HDPE: High-density polyethylene");
+            }
+            if (resinID == 3) {
+                materialLabel.setText("PVC: Polyvinyl Chloride");
+            }
+            if (resinID == 4) {
+                materialLabel.setText("LDPE: Low-Density Polyethylene");
+            }
+            if (resinID == 5) {
+                materialLabel.setText("PP: Polypropylene");
+            }
+            if (resinID == 6) {
+                materialLabel.setText("PS: Polystyrene");
+            }
+            if (resinID == 7) {
+                materialLabel.setText("Other: Other");
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Resin ID is not within range!");
+        }
+    }
+
+    public void ecoScoreGeneration(int resinID, String disposalInput){
+
+        {
+            if (resinID == 1) {
+                outputEcoScore(resinID, disposalInput);
+            }
+            if (resinID == 2) {
+                outputEcoScore(resinID, disposalInput);
+            }
+            if (resinID == 3) {
+                outputEcoScore(resinID, disposalInput);
+            }
+            if (resinID == 4) {
+                outputEcoScore(resinID, disposalInput);
+            }
+            if (resinID == 5) {
+                outputEcoScore(resinID, disposalInput);
+            }
+            if (resinID == 6) {
+                outputEcoScore(resinID, disposalInput);
+            }
+            if (resinID == 7) {
+                outputEcoScore(resinID, disposalInput);
+            }
+        }
+
+
+
+
+    }
+
+    private void outputEcoScore(int resinID, String disposalInput) {
+        if(disposalInput.contains("Recycle")) {
+        System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
+            commentLabel.setText(resinID + " " + disposalInput);
+        }
+        if(disposalInput.contains("Compost")) {
+            System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
+            commentLabel.setText(resinID + " " + disposalInput);
+        }
+        if(disposalInput.contains("Garbage")) {
+            System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
+            commentLabel.setText(resinID + " " + disposalInput);
+        }
+        if(disposalInput.contains("Sorting Facility")) {
+            System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
+            commentLabel.setText(resinID + " " + disposalInput);
+        }
     }
 
 
@@ -84,5 +199,45 @@ public class Controller implements Initializable {
         /*
 
         disposalComboBox.getItems().addAll("Recycle", "Garbage", "Local Disposal Facility");*/
+        // Validation for Resin Spinner
+
+       TextField resinEditor = resinSpinner.getEditor();
+
+       resinEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
+           System.out.printf("Old Resin ID: %s New Resin ID: %s%n", oldValue, newValue);
+           try {
+               Integer.parseInt(newValue); //Checks to see if it's an int
+               materialLoader(Integer.parseInt(newValue));  // If so, then I can pass this new Value into a function that will change the material
+           } catch (NumberFormatException e) {
+               resinEditor.setText(oldValue);
+               objectLabel.setTextFill(Color.RED);
+               objectLabel.setText("Only whole numbers are allowed!");
+
+           }
+
+           resinSpinner.setEditable(true);
+       });
+        disposalComboBox.getItems().addAll("Recycle", "Compost", "Garbage", "Sorting Facility");
+        disposalComboBox.setEditable(true);
+        TextField disposalEditor = disposalComboBox.getEditor();
+
+       disposalEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
+          System.out.printf("Old Disposal Method: %s, New Disposal Method: %s%n", oldValue, newValue);
+           try {
+               System.out.println(resinSpinner.getValue() + newValue);      // Need to check to see when Resin and Disposal are Blank
+               ecoScoreGeneration(resinSpinner.getValue(), newValue);
+
+           } catch(IllegalArgumentException e) {
+               disposalComboBox.setValue(oldValue);
+               objectLabel.setTextFill(Color.RED);
+               objectLabel.setText("Only proper disposal methods allowed!");
+
+           }
+           disposalComboBox.setEditable(true);
+
+
+       });
+
+
     }
 }

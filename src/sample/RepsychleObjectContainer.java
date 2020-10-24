@@ -82,7 +82,7 @@ public class RepsychleObjectContainer {
         Need to generate an EcoScore Percentage (Not even close to being accurate):
             Size of the Item:
             Recycle Rating:
-                PETE    -   Polyethylene Terepthalate   -   1   -   High
+                PETE    -   Polyethylene Terephthalate   -   1   -   High
                         *   Soft drinks, water, ketchup, and beer bottles, mouthwash bottles, peanut butter containers,
                             salad dressing, vegetable oil containers
                         *   Rinse of any foods or contents, place caps into the trash! Rest is good for blue bin!
@@ -132,7 +132,7 @@ public class RepsychleObjectContainer {
                         *   Not many programs accept them and many manufactures have switched to PET
                         *   Recycled into Insulation, light switch plates, egg cartons, vents, rulers, foam packaging, carry-out containers
 
-                Other   -   Other   -   7   -   Low
+               Other    -   Other   -   7   -   Low
                         *   Polycarbonate has been shown to be a hormone disruptor, PLA (polylactic acid) is made from plants and is carbon neutral, also falls into this category
                         *   Found in three- and five-gallon water bottles, bullet-proof materials, sunglasses, DVDs, iPod and Computer Cases, signs and displays
                             certain food containers, nylon
