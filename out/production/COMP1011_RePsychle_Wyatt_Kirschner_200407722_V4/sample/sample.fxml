@@ -93,7 +93,7 @@
                         </Label>
                         <Label fx:id="ecoScoreLabel" text="Very Low / Low / Medium / High / Very High" textFill="#da6666" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <font>
-                              <Font name="Calibri Bold" size="16.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
                      </children>

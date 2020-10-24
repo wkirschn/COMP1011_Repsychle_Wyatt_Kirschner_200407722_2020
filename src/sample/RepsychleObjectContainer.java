@@ -1,22 +1,41 @@
+/*
+    Name:       Wyatt Kirschner
+    Student ID: 200407722
+    Date:       10/24/20
+    Notes:
+        I have made some modifications so far. Changed how the Regular Expressions work with the various reasons of
+        data input. I have also started to incorporate how an Add Product scene will limit the scope of entry on
+        certain items. The EcoScore will be generated from the Resin ID, since this rating does state how easy it is
+        to recycle or how harmful the product is!
+
+        I'm planning on having the input of how the item being disposed of generating a comment based on the user's actions.
+
+        The comments section will also be auto generated based the Resin ID selected and the dispsosal method
+
+        I would need to next have functions that will set the label values as required.
+
+        The purpose of this is to generate the hardcode needed to have these objects being created with success
+
+        I will then need to place this into the database and then the charts / table
+
+
+ */
+
+
 package sample;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
 
 public class RepsychleObjectContainer {
     private int id; // This will be the Primary key
     private int resinIdCode;
-    private String brandName, objectName, material, disposal, ecoDoc;
-    private Double ecoScore;
+    private String brandName, objectName, material, disposal, ecoDoc, ecoScore;
     //Name: Marker, Plastic, Recycle
-        // Later on, I will implement different lists so I can have the material name, EcoScore, disposal method
+    // Later on, I will implement different lists so I can have the material name, EcoScore, disposal method
     //As I am putting these into strings, I can create different Hashlists or arraylists to read out of later
-    private final String nameRegEx = "[A-Z][a-zA-Z\\-\\s']";
 
+    private final String nameRegEx = "[A-Za-z\\s]{1,50}";  //Take another look
+    private final String commentRegEx = "^[a-zA-Z0-9!.~`$%^\\s]{0,255}";      // Might need to expand limits
 
-    public RepsychleObjectContainer(int id, int resinIdCode, String brandName, String objectName, String material, String disposal, Double ecoScore, String ecoDoc) {
+    public RepsychleObjectContainer(int id, int resinIdCode, String brandName, String objectName, String material, String disposal, String ecoScore, String ecoDoc) {
         setId(id);
         setResinIdCode(resinIdCode);
         setBrandName(brandName);
@@ -25,8 +44,6 @@ public class RepsychleObjectContainer {
         setDisposal(disposal);
         setEcoScore(ecoScore);
         setEcoDoc(ecoDoc);
-
-
 
     }
 
@@ -38,8 +55,8 @@ public class RepsychleObjectContainer {
         if(id > 0) {            // Okay for now, but there is nothing to stop me from overwriting a previously created ID
             this.id = id;
         }
-       else {
-           throw new IllegalArgumentException("Please select an ID that is greater than 0!");
+        else {
+            throw new IllegalArgumentException("Please select an ID that is greater than 0!");
         }
     }
 
@@ -110,8 +127,8 @@ public class RepsychleObjectContainer {
 
                 PS      -   Polystyrene     -   6   -   Low
                         *   Rigid or foam products (Styrofoam)
-                        *   Styrene monomer can leach into food and is a possible carinogen
-                        *   Disposable plates and cups, meat trays, egg cartons, carry-out containers, asprin bottles, compact disc cases
+                        *   Styrene monomer can leach into food and is a possible carcinogen
+                        *   Disposable plates and cups, meat trays, egg cartons, carry-out containers, Asprin bottles, compact disc cases
                         *   Not many programs accept them and many manufactures have switched to PET
                         *   Recycled into Insulation, light switch plates, egg cartons, vents, rulers, foam packaging, carry-out containers
 
@@ -149,6 +166,7 @@ public class RepsychleObjectContainer {
 
     public void setObjectName(String objectName) {
         if(objectName.matches(nameRegEx)) {
+
             this.objectName = objectName;
         }
         else {
@@ -192,16 +210,17 @@ public class RepsychleObjectContainer {
         }
     }
 
-    public Double getEcoScore() {
+    public String getEcoScore() {
         return ecoScore;
     }
 
-    public void setEcoScore (Double ecoScore) {
-        if (ecoScore >= 0.00 || ecoScore <= 100.00){
-            this.ecoScore = ecoScore;
+    public void setEcoScore (String ecoScore) {
+        if(ecoScore.matches(nameRegEx)) {
+
+            this.objectName = objectName;
         }
         else {
-            throw new IllegalArgumentException("Please enter an EcoScore between 0.00 and 100.00!");
+            throw new IllegalArgumentException("Please ensure a valid EcoScore rating is produced!");
         }
     }
 
@@ -210,11 +229,24 @@ public class RepsychleObjectContainer {
     }
 
     public void setEcoDoc(String ecoDoc) {
-        if(ecoDoc.matches(nameRegEx)) {
+        if(ecoDoc.matches(commentRegEx)) {
             this.ecoDoc = ecoDoc;
         }
         else {
             throw new IllegalArgumentException("Please enter a valid comment regarding the product!");
         }
     }
+
+    public String toString() {
+        return String.format("Resin ID: %s, Brand Name: %s, Product Name: %s, Material: %s, Disposal Method: %s, EcoScore: %s, Comments: %s",
+                resinIdCode, brandName, objectName, material, disposal, ecoScore, ecoDoc);
+
+
+
+    }
+
+
+
+
+
 }
