@@ -30,9 +30,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextFlow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static javafx.scene.paint.Color.RED;
 
 public class Controller implements Initializable {
 
@@ -55,7 +58,7 @@ public class Controller implements Initializable {
     private Label materialLabel;
 
     @FXML
-    private Label commentLabel;
+    private TextArea commentLabel;
 
     @FXML
     private Label ecoScoreLabel;
@@ -79,7 +82,7 @@ public class Controller implements Initializable {
 
     public boolean inputValidation()
     {
-        infoLabel.setTextFill(Color.RED);
+        infoLabel.setTextFill(RED);
         if(brandNameTextField.getText().trim().isEmpty()) {
         objectLabel.setText("Please enter a brand name!");
         return false;
@@ -140,59 +143,153 @@ public class Controller implements Initializable {
         }
     }
 
-    public void ecoScoreGeneration(int resinID, String disposalInput){
 
-        {
-            if (resinID == 1) {
-                outputEcoScore(resinID, disposalInput);
-            }
-            if (resinID == 2) {
-                outputEcoScore(resinID, disposalInput);
-            }
-            if (resinID == 3) {
-                outputEcoScore(resinID, disposalInput);
-            }
-            if (resinID == 4) {
-                outputEcoScore(resinID, disposalInput);
-            }
-            if (resinID == 5) {
-                outputEcoScore(resinID, disposalInput);
-            }
-            if (resinID == 6) {
-                outputEcoScore(resinID, disposalInput);
-            }
-            if (resinID == 7) {
-                outputEcoScore(resinID, disposalInput);
-            }
+
+    public void commentGenerator(int resinId, String disposalMethod, String material) {
+        System.out.println(disposalMethod + "WOAH");
+    String comment = ("You have selected a product rated with a resin ID of:" + resinId + " and you are attempting to ");
+
+
+        if(disposalMethod.contains("Recycle")) {
+            //comment += "recycle an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod));
+            comment += "recycle an object that contains " + material + ". The ecoScore of the object is ";
+            //comment += outputEcoScore(resinId, disposalMethod) + ". "; //+ ecoScoreComment(outputEcoScore(resinId, disposalMethod));
+
+
+            System.out.println(outputEcoScore(2,"Recycle"));
+
+            commentLabel.setText(comment);
         }
+       if(disposalMethod.contains("Compost")) {
+            comment += ("compost an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
+
+
+            commentLabel.setText(comment);
+        }
+        if(disposalMethod.contains("Garbage")) {
+            comment += ("place this object in the trash that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
+
+
+            commentLabel.setText(comment);
+        }
+        if(disposalMethod.contains("Sorting Facility")) {
+            comment += ("Bring this object to a sorting facility, that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
+
+
+            commentLabel.setText(comment);
+        }
+        if(disposalMethod.contains("Select")) {
+
+
+
+            SpinnerValueFactory<Integer> valueFactory =
+                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1,7);
+            resinSpinner.setValueFactory(valueFactory);
+
+        }
+
+        System.out.println(comment);
+
+
 
 
 
 
     }
-
-    private void outputEcoScore(int resinID, String disposalInput) {
-        if(disposalInput.contains("Recycle")) {
-        System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
-            commentLabel.setText(resinID + " " + disposalInput);
+private String ecoScoreComment(String ecoScoreLabel) {
+        String ecoScoreComment;
+        if(ecoScoreLabel.contains("VERY LOW")) {
+            ecoScoreComment = "This object contains a material that cannot be disposed in the best way possible. It may cause environmental impact when being disposed. Avoid when possible.";
         }
-        if(disposalInput.contains("Compost")) {
-            System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
-            commentLabel.setText(resinID + " " + disposalInput);
-        }
-        if(disposalInput.contains("Garbage")) {
-            System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
-            commentLabel.setText(resinID + " " + disposalInput);
-        }
-        if(disposalInput.contains("Sorting Facility")) {
-            System.out.printf("Resin ID: %s, Disposal Method: %s", resinID, disposalInput);
-            commentLabel.setText(resinID + " " + disposalInput);
-        }
+    if(ecoScoreLabel.contains("LOW")) {
+        ecoScoreComment = "This object contains a material that can be disposed of in a way that cannot be disposed of in the best way possible. The environmental impact isn’t as prevalent. Use with caution.";
     }
+    if(ecoScoreLabel.contains("MEDIUM")) {
+        ecoScoreComment = "This object contains a material that can be disposed of properly if placed in the proper area. There are great reuses for this material. Clean the material before using the provided disposal method.";
+    }
+    if(ecoScoreLabel.contains("HIGH")) {
+        ecoScoreComment = "This object contains a material that is great to reuse and dispose of when done properly. This material can be easily reused. Clean the material and recycle when possible.";
+    }
+    if(ecoScoreLabel.contains("VERY HIGH")) {
+        ecoScoreComment = "This object contains a material that is ideal for recycling, and reusability. This material can be easily reused. Clean the material and recycle when possible.";
+    }
+    else {
+       throw new IllegalArgumentException("The ecoScore comment cannot be retrieved!");
 
+    }
+    return ecoScoreComment;
+}
+
+
+
+    // This is to check the disposal input and the resinID to determine the ecoScore
+    private String outputEcoScore(int resinID, String disposalInput) {
+        //ecoScoreLabel.setText("ERROR");
+        int check = resinID;
+        System.out.println("ERROR CHECK ME " + resinID + disposalInput);
+        if (disposalInput.contains("Recycle")) {
+            switch (resinID) {
+                case 1:
+                    ecoScoreLabel.setText("VERY HIGH");
+                    break;
+                case 2:
+                    ecoScoreLabel.setText("MEDIUM");
+                    break;
+                case 3:
+                case 4:
+                case 6:
+                    ecoScoreLabel.setText("LOW");
+                    break;
+                case 5:
+                case 7:
+                    ecoScoreLabel.setText("HIGH");
+                    break;
+
+
+            }
+
+
+            if (disposalInput.contains("Compost") || disposalInput.contains("Garbage")) {
+
+                if (resinID == 1 || resinID == 5 || resinID == 7) {
+                    ecoScoreLabel.setText("LOW");
+                }
+                if ((resinID >= 2 && resinID <= 4) || resinID == 6) {
+                    ecoScoreLabel.setText("VERY LOW");
+                }
+                return ecoScoreLabel.getText();
+            }
+            if (disposalInput.contains("Sorting Facility")) {
+                if (resinID == 2) {
+                    ecoScoreLabel.setText("HIGH");
+                }
+                if (resinID == 1 || resinID >= 3 || resinID <= 7) {
+                    ecoScoreLabel.setText("MEDIUM");
+                }
+                return ecoScoreLabel.getText();
+            }
+            if (disposalInput.contains("Select")) {
+
+                commentLabel.setText("");
+
+                SpinnerValueFactory<Integer> valueFactory =
+                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
+                resinSpinner.setValueFactory(valueFactory);
+
+            } else {
+                throw new IllegalArgumentException("Error in generating ecoScore");
+            }
+            System.out.println("ZZZ" + ecoScoreLabel.getText());
+            return ecoScoreLabel.getText();
+        }
+        return "ERROR";
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        commentLabel.setDisable(true);
+        commentLabel.setWrapText(true);
+
           SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1,7);
         resinSpinner.setValueFactory(valueFactory);
@@ -210,28 +307,30 @@ public class Controller implements Initializable {
                materialLoader(Integer.parseInt(newValue));  // If so, then I can pass this new Value into a function that will change the material
            } catch (NumberFormatException e) {
                resinEditor.setText(oldValue);
-               objectLabel.setTextFill(Color.RED);
+               objectLabel.setTextFill(RED);
                objectLabel.setText("Only whole numbers are allowed!");
-
            }
 
            resinSpinner.setEditable(true);
        });
-        disposalComboBox.getItems().addAll("Recycle", "Compost", "Garbage", "Sorting Facility");
+        disposalComboBox.getItems().addAll("Select", "Recycle", "Compost", "Garbage", "Sorting Facility");
         disposalComboBox.setEditable(true);
         TextField disposalEditor = disposalComboBox.getEditor();
 
        disposalEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
           System.out.printf("Old Disposal Method: %s, New Disposal Method: %s%n", oldValue, newValue);
+
+          String tossValue = newValue;
            try {
-               System.out.println(resinSpinner.getValue() + newValue);      // Need to check to see when Resin and Disposal are Blank
-               ecoScoreGeneration(resinSpinner.getValue(), newValue);
+               disposalComboBox.setEditable(true);
+               System.out.println(resinSpinner.getValue() + newValue + materialLabel.getText());      // Need to check to see when Resin and Disposal are Blank
+               commentGenerator(resinSpinner.getValue(), tossValue, materialLabel.getText());
+               //ecoScoreGeneration(resinSpinner.getValue(), newValue);
 
            } catch(IllegalArgumentException e) {
                disposalComboBox.setValue(oldValue);
-               objectLabel.setTextFill(Color.RED);
+               objectLabel.setTextFill(RED);
                objectLabel.setText("Only proper disposal methods allowed!");
-
            }
            disposalComboBox.setEditable(true);
 
