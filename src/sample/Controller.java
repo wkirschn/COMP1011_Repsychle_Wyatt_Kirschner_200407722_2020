@@ -147,38 +147,37 @@ public class Controller implements Initializable {
 
     public void commentGenerator(int resinId, String disposalMethod, String material) {
         System.out.println(disposalMethod + "WOAH");
-    String comment = ("You have selected a product rated with a resin ID of:" + resinId + " and you are attempting to ");
+    String comment = ("You have selected a product rated with a resin ID of: " + resinId + " and you are attempting to ");
 
 
         if(disposalMethod.contains("Recycle")) {
-            //comment += "recycle an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod));
-            comment += "recycle an object that contains " + material + ". The ecoScore of the object is ";
+            comment += "recycle an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod));
+            //comment += "recycle an object that contains " + material + ". The ecoScore of the object is ";
             //comment += outputEcoScore(resinId, disposalMethod) + ". "; //+ ecoScoreComment(outputEcoScore(resinId, disposalMethod));
 
 
-            System.out.println(outputEcoScore(2,"Recycle"));
+            System.out.println(outputEcoScore(resinId,"Recycle"));
 
             commentLabel.setText(comment);
         }
-       if(disposalMethod.contains("Compost")) {
+      else if(disposalMethod.contains("Compost")) {
             comment += ("compost an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
 
 
             commentLabel.setText(comment);
         }
-        if(disposalMethod.contains("Garbage")) {
+       else if(disposalMethod.contains("Garbage")) {
             comment += ("place this object in the trash that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
-
 
             commentLabel.setText(comment);
         }
-        if(disposalMethod.contains("Sorting Facility")) {
+       else if(disposalMethod.contains("Sorting Facility")) {
             comment += ("Bring this object to a sorting facility, that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
 
 
             commentLabel.setText(comment);
         }
-        if(disposalMethod.contains("Select")) {
+       else  {
 
 
 
@@ -200,24 +199,29 @@ private String ecoScoreComment(String ecoScoreLabel) {
         String ecoScoreComment;
         if(ecoScoreLabel.contains("VERY LOW")) {
             ecoScoreComment = "This object contains a material that cannot be disposed in the best way possible. It may cause environmental impact when being disposed. Avoid when possible.";
+            return ecoScoreComment;
         }
-    if(ecoScoreLabel.contains("LOW")) {
+   else if(ecoScoreLabel.contains("LOW")) {
         ecoScoreComment = "This object contains a material that can be disposed of in a way that cannot be disposed of in the best way possible. The environmental impact isn’t as prevalent. Use with caution.";
-    }
-    if(ecoScoreLabel.contains("MEDIUM")) {
+            return ecoScoreComment;
+   }
+   else if(ecoScoreLabel.contains("MEDIUM")) {
         ecoScoreComment = "This object contains a material that can be disposed of properly if placed in the proper area. There are great reuses for this material. Clean the material before using the provided disposal method.";
-    }
-    if(ecoScoreLabel.contains("HIGH")) {
+            return ecoScoreComment;
+   }
+   else if(ecoScoreLabel.contains("HIGH")) {
         ecoScoreComment = "This object contains a material that is great to reuse and dispose of when done properly. This material can be easily reused. Clean the material and recycle when possible.";
-    }
-    if(ecoScoreLabel.contains("VERY HIGH")) {
+            return ecoScoreComment;
+   }
+    else if(ecoScoreLabel.contains("VERY HIGH")) {
         ecoScoreComment = "This object contains a material that is ideal for recycling, and reusability. This material can be easily reused. Clean the material and recycle when possible.";
+            return ecoScoreComment;
     }
     else {
        throw new IllegalArgumentException("The ecoScore comment cannot be retrieved!");
 
     }
-    return ecoScoreComment;
+
 }
 
 
@@ -225,45 +229,43 @@ private String ecoScoreComment(String ecoScoreLabel) {
     // This is to check the disposal input and the resinID to determine the ecoScore
     private String outputEcoScore(int resinID, String disposalInput) {
         //ecoScoreLabel.setText("ERROR");
-        int check = resinID;
+
         System.out.println("ERROR CHECK ME " + resinID + disposalInput);
-        if (disposalInput.contains("Recycle")) {
-            switch (resinID) {
-                case 1:
-                    ecoScoreLabel.setText("VERY HIGH");
-                    break;
-                case 2:
-                    ecoScoreLabel.setText("MEDIUM");
-                    break;
-                case 3:
-                case 4:
-                case 6:
+
+
+
+            if (disposalInput.contains("Recycle")) {
+                if (resinID == 3 || resinID == 4 || resinID == 6) {
                     ecoScoreLabel.setText("LOW");
-                    break;
-                case 5:
-                case 7:
+                }
+              else  if (resinID == 2) {
+                    ecoScoreLabel.setText("MEDIUM");
+                }
+               else if (resinID == 5 | resinID == 7) {
                     ecoScoreLabel.setText("HIGH");
-                    break;
-
-
+                }
+               else if (resinID == 1) {
+                    ecoScoreLabel.setText("VERY HIGH");
+                }
+                return ecoScoreLabel.getText();
             }
 
 
-            if (disposalInput.contains("Compost") || disposalInput.contains("Garbage")) {
+          else  if (disposalInput.contains("Compost") | disposalInput.contains("Garbage")) {
 
                 if (resinID == 1 || resinID == 5 || resinID == 7) {
                     ecoScoreLabel.setText("LOW");
                 }
-                if ((resinID >= 2 && resinID <= 4) || resinID == 6) {
+               else if ((resinID >= 2 && resinID <= 4) | resinID == 6) {
                     ecoScoreLabel.setText("VERY LOW");
                 }
                 return ecoScoreLabel.getText();
             }
-            if (disposalInput.contains("Sorting Facility")) {
+           else if (disposalInput.contains("Sorting Facility")) {
                 if (resinID == 2) {
                     ecoScoreLabel.setText("HIGH");
                 }
-                if (resinID == 1 || resinID >= 3 || resinID <= 7) {
+              else  if (resinID == 1 || resinID >= 3 || resinID <= 7) {
                     ecoScoreLabel.setText("MEDIUM");
                 }
                 return ecoScoreLabel.getText();
@@ -282,8 +284,8 @@ private String ecoScoreComment(String ecoScoreLabel) {
             System.out.println("ZZZ" + ecoScoreLabel.getText());
             return ecoScoreLabel.getText();
         }
-        return "ERROR";
-    }
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
