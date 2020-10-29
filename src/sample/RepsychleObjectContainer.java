@@ -32,8 +32,8 @@ public class RepsychleObjectContainer {
     // Later on, I will implement different lists so I can have the material name, EcoScore, disposal method
     //As I am putting these into strings, I can create different Hashlists or arraylists to read out of later
 
-    private final String nameRegEx = "[A-Za-z\\s]{1,50}";  //Take another look
-    private final String commentRegEx = "^[a-zA-Z0-9!.~`$%^\\s]{0,255}";      // Might need to expand limits
+    private final String nameRegEx = "[A-Za-z\\s]{1,50}"; //Take another look
+    private final String commentRegEx = "^[a-zA-Z0-9!.~`$%^\\s]{0,255}"; // Might need to expand limits
 
     public RepsychleObjectContainer(int id, int resinIdCode, String brandName, String objectName, String material, String disposal, String ecoScore, String ecoDoc) {
         setId(id);
@@ -52,10 +52,9 @@ public class RepsychleObjectContainer {
     }
 
     public void setId(int id) {
-        if(id > 0) {            // Okay for now, but there is nothing to stop me from overwriting a previously created ID
+        if (id > 0) { // Okay for now, but there is nothing to stop me from overwriting a previously created ID
             this.id = id;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Please select an ID that is greater than 0!");
         }
     }
@@ -65,11 +64,9 @@ public class RepsychleObjectContainer {
     }
 
     public void setResinIdCode(int resinIdCode) {
-        if(resinIdCode >= 0 && resinIdCode <= 7) {
+        if (resinIdCode >= 0 && resinIdCode <= 7) {
             this.resinIdCode = resinIdCode;
-        }
-
-        else {
+        } else {
             throw new IllegalArgumentException("Please enter a valid Resin ID Code from 0 to 7!");
         }
     }
@@ -144,8 +141,8 @@ public class RepsychleObjectContainer {
      */
 
 
-    public void setBrandName(String brandName) {                // If you have a Brand Name, then in the future... have it isolate the
-        if(brandName.matches(nameRegEx)) {
+    public void setBrandName(String brandName) { // If you have a Brand Name, then in the future... have it isolate the
+        if (brandName.matches(nameRegEx)) {
             // Specific CSV or list it can pull from, this is just simple concept
             this.brandName = brandName;
         }
@@ -165,11 +162,10 @@ public class RepsychleObjectContainer {
      */
 
     public void setObjectName(String objectName) {
-        if(objectName.matches(nameRegEx)) {
+        if (objectName.matches(nameRegEx)) {
 
             this.objectName = objectName;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Please enter in a valid object name!");
         }
     }
@@ -187,8 +183,8 @@ public class RepsychleObjectContainer {
 
 
     public void setMaterial(String material) {
-        if(material.matches(nameRegEx)) {
-            this.material = material;           // Validation for the Regex
+        if (material.matches(nameRegEx)) {
+            this.material = material; // Validation for the Regex
         }
     }
 
@@ -201,11 +197,9 @@ public class RepsychleObjectContainer {
      */
 
     public void setDisposal(String disposal) {
-        if(disposal.equalsIgnoreCase("Recycle") || disposal.equalsIgnoreCase("Garbage") || disposal.equalsIgnoreCase("Compost"))
-        {
+        if (disposal.equalsIgnoreCase("Recycle") || disposal.equalsIgnoreCase("Garbage") || disposal.equalsIgnoreCase("Compost")) {
             this.disposal = disposal;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Please enter a disposal method that is either: Recycle, Garbage, Compost!");
         }
     }
@@ -214,12 +208,11 @@ public class RepsychleObjectContainer {
         return ecoScore;
     }
 
-    public void setEcoScore (String ecoScore) {
-        if(ecoScore.matches(nameRegEx)) {
+    public void setEcoScore(String ecoScore) {
+        if (ecoScore.matches(nameRegEx)) {
 
             this.objectName = objectName;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Please ensure a valid EcoScore rating is produced!");
         }
     }
@@ -229,10 +222,9 @@ public class RepsychleObjectContainer {
     }
 
     public void setEcoDoc(String ecoDoc) {
-        if(ecoDoc.matches(commentRegEx)) {
+        if (ecoDoc.matches(commentRegEx)) {
             this.ecoDoc = ecoDoc;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Please enter a valid comment regarding the product!");
         }
     }

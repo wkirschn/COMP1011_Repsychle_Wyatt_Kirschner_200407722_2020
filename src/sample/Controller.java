@@ -25,6 +25,7 @@
 package sample;
 
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,11 +49,11 @@ public class Controller implements Initializable {
     private TextField productNameTextField;
 
     @FXML
-    private Spinner<Integer> resinSpinner;
+    private Spinner < Integer > resinSpinner;
 
 
     @FXML
-    private ComboBox<String> disposalComboBox;
+    private ComboBox < String > disposalComboBox;
 
     @FXML
     private Label materialLabel;
@@ -72,49 +73,69 @@ public class Controller implements Initializable {
 
 
     @FXML
+    void exitButton(ActionEvent event) throws InterruptedException {
+        //  https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html;   https://docs.oracle.com/javase/8/javafx/api/javafx/application/Platform.html
+        // This was used from these documents to create the exit needed
+
+
+        Thread.sleep(500);
+        Platform.exit();
+
+    }
+
+    @FXML
+    void statisticsButton(ActionEvent event) {
+        // There will be a check where it will determine if there is anything in the database table. If not, it will be asked to add an item first to the database
+
+    }
+
+    @FXML
     void submitButton(ActionEvent event) {
         System.out.println("Send!");
+        // This is to add the item to the database
+        if (inputValidation() == true) {
+            System.out.println("VALIDATION PASSES");
+        } else {
+            throw new IllegalArgumentException("Make sure that the fields are properly filled out!");
+        }
 
 
 
 
     }
 
-    public boolean inputValidation()
-    {
+    public boolean inputValidation() {
         infoLabel.setTextFill(RED);
-        if(brandNameTextField.getText().trim().isEmpty()) {
-        objectLabel.setText("Please enter a brand name!");
-        return false;
+        if (brandNameTextField.getText().trim().isEmpty()) {
+            infoLabel.setText("Please enter a brand name!");
+            return false;
         }
-        if(productNameTextField.getText().trim().isEmpty()) {
-            objectLabel.setText("Please enter a product name!");
+        if (productNameTextField.getText().trim().isEmpty()) {
+            infoLabel.setText("Please enter a product name!");
             return false;
         }
 
-        if(materialLabel.getText().trim().isEmpty()){
-            objectLabel.setText("Please select a Resin ID!");
+        if (materialLabel.getText().trim().isEmpty()) {
+            infoLabel.setText("Please select a Resin ID!");
             return false;
         }
-        if(disposalComboBox.getValue().isEmpty()) {
-            objectLabel.setText("Please select a disposal method!");
+        if (disposalComboBox.getValue().isEmpty()) {
+            infoLabel.setText("Please select a disposal method!");
             return false;
         }
-        if(commentLabel.getText().isEmpty()) {
-            objectLabel.setText("Please ensure a comment is passed!");
+        if (commentLabel.getText().isEmpty()) {
+            infoLabel.setText("Please ensure a comment is passed!");
             return false;
         }
-        if(ecoScoreLabel.getText().isEmpty()) {
-            objectLabel.setText("Please ensure an EcoScore is Generated!");
+        if (ecoScoreLabel.getText().isEmpty()) {
+            infoLabel.setText("Please ensure an EcoScore is Generated!");
             return false;
-        }
-
-        else {
+        } else {
             return true;
         }
     }
 
-    public void materialLoader(int resinID) {   // When it comes to creating an object, then I will collect the information to parse into the database
+    public void materialLoader(int resinID) { // When it comes to creating an object, then I will collect the information to parse into the database
         if (resinID >= 1 || resinID <= 7) {
             if (resinID == 1) {
                 materialLabel.setText("PETE: Polyethylene Terephthalate");
@@ -137,8 +158,7 @@ public class Controller implements Initializable {
             if (resinID == 7) {
                 materialLabel.setText("Other: Other");
             }
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Resin ID is not within range!");
         }
     }
@@ -147,42 +167,38 @@ public class Controller implements Initializable {
 
     public void commentGenerator(int resinId, String disposalMethod, String material) {
         System.out.println(disposalMethod + "WOAH");
-    String comment = ("You have selected a product rated with a resin ID of: " + resinId + " and you are attempting to ");
+        String comment = ("You have selected a product rated with a resin ID of: " + resinId + " and you are attempting to ");
 
 
-        if(disposalMethod.contains("Recycle")) {
+        if (disposalMethod.contains("Recycle")) {
             comment += "recycle an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod));
             //comment += "recycle an object that contains " + material + ". The ecoScore of the object is ";
             //comment += outputEcoScore(resinId, disposalMethod) + ". "; //+ ecoScoreComment(outputEcoScore(resinId, disposalMethod));
 
 
-            System.out.println(outputEcoScore(resinId,"Recycle"));
+            System.out.println(outputEcoScore(resinId, "Recycle"));
 
             commentLabel.setText(comment);
-        }
-      else if(disposalMethod.contains("Compost")) {
+        } else if (disposalMethod.contains("Compost")) {
             comment += ("compost an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
 
 
             commentLabel.setText(comment);
-        }
-       else if(disposalMethod.contains("Garbage")) {
+        } else if (disposalMethod.contains("Garbage")) {
             comment += ("place this object in the trash that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
 
             commentLabel.setText(comment);
-        }
-       else if(disposalMethod.contains("Sorting Facility")) {
+        } else if (disposalMethod.contains("Sorting Facility")) {
             comment += ("Bring this object to a sorting facility, that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
 
 
             commentLabel.setText(comment);
-        }
-       else  {
+        } else {
 
 
 
-            SpinnerValueFactory<Integer> valueFactory =
-                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1,7);
+            SpinnerValueFactory < Integer > valueFactory =
+                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
             resinSpinner.setValueFactory(valueFactory);
 
         }
@@ -195,34 +211,29 @@ public class Controller implements Initializable {
 
 
     }
-private String ecoScoreComment(String ecoScoreLabel) {
+    private String ecoScoreComment(String ecoScoreLabel) {
         String ecoScoreComment;
-        if(ecoScoreLabel.contains("VERY LOW")) {
+        if (ecoScoreLabel.contains("VERY LOW")) {
             ecoScoreComment = "This object contains a material that cannot be disposed in the best way possible. It may cause environmental impact when being disposed. Avoid when possible.";
             return ecoScoreComment;
+        } else if (ecoScoreLabel.contains("LOW")) {
+            ecoScoreComment = "This object contains a material that can be disposed of in a way that cannot be disposed of in the best way possible. The environmental impact isn’t as prevalent. Use with caution.";
+            return ecoScoreComment;
+        } else if (ecoScoreLabel.contains("MEDIUM")) {
+            ecoScoreComment = "This object contains a material that can be disposed of properly if placed in the proper area. There are great reuses for this material. Clean the material before using the provided disposal method.";
+            return ecoScoreComment;
+        } else if (ecoScoreLabel.contains("HIGH")) {
+            ecoScoreComment = "This object contains a material that is great to reuse and dispose of when done properly. This material can be easily reused. Clean the material and recycle when possible.";
+            return ecoScoreComment;
+        } else if (ecoScoreLabel.contains("VERY HIGH")) {
+            ecoScoreComment = "This object contains a material that is ideal for recycling, and reusability. This material can be easily reused. Clean the material and recycle when possible.";
+            return ecoScoreComment;
+        } else {
+            throw new IllegalArgumentException("The ecoScore comment cannot be retrieved!");
+
         }
-   else if(ecoScoreLabel.contains("LOW")) {
-        ecoScoreComment = "This object contains a material that can be disposed of in a way that cannot be disposed of in the best way possible. The environmental impact isn’t as prevalent. Use with caution.";
-            return ecoScoreComment;
-   }
-   else if(ecoScoreLabel.contains("MEDIUM")) {
-        ecoScoreComment = "This object contains a material that can be disposed of properly if placed in the proper area. There are great reuses for this material. Clean the material before using the provided disposal method.";
-            return ecoScoreComment;
-   }
-   else if(ecoScoreLabel.contains("HIGH")) {
-        ecoScoreComment = "This object contains a material that is great to reuse and dispose of when done properly. This material can be easily reused. Clean the material and recycle when possible.";
-            return ecoScoreComment;
-   }
-    else if(ecoScoreLabel.contains("VERY HIGH")) {
-        ecoScoreComment = "This object contains a material that is ideal for recycling, and reusability. This material can be easily reused. Clean the material and recycle when possible.";
-            return ecoScoreComment;
-    }
-    else {
-       throw new IllegalArgumentException("The ecoScore comment cannot be retrieved!");
 
     }
-
-}
 
 
 
@@ -230,60 +241,47 @@ private String ecoScoreComment(String ecoScoreLabel) {
     private String outputEcoScore(int resinID, String disposalInput) {
         //ecoScoreLabel.setText("ERROR");
 
-        System.out.println("ERROR CHECK ME " + resinID + disposalInput);
-
-
-
-            if (disposalInput.contains("Recycle")) {
-                if (resinID == 3 || resinID == 4 || resinID == 6) {
-                    ecoScoreLabel.setText("LOW");
-                }
-              else  if (resinID == 2) {
-                    ecoScoreLabel.setText("MEDIUM");
-                }
-               else if (resinID == 5 | resinID == 7) {
-                    ecoScoreLabel.setText("HIGH");
-                }
-               else if (resinID == 1) {
-                    ecoScoreLabel.setText("VERY HIGH");
-                }
-                return ecoScoreLabel.getText();
+        if (disposalInput.contains("Recycle")) {
+            if (resinID == 3 || resinID == 4 || resinID == 6) {
+                ecoScoreLabel.setText("LOW");
+            } else if (resinID == 2) {
+                ecoScoreLabel.setText("MEDIUM");
+            } else if (resinID == 5 | resinID == 7) {
+                ecoScoreLabel.setText("HIGH");
+            } else if (resinID == 1) {
+                ecoScoreLabel.setText("VERY HIGH");
             }
+            return ecoScoreLabel.getText();
+        } else if (disposalInput.contains("Compost") | disposalInput.contains("Garbage")) {
 
-
-          else  if (disposalInput.contains("Compost") | disposalInput.contains("Garbage")) {
-
-                if (resinID == 1 || resinID == 5 || resinID == 7) {
-                    ecoScoreLabel.setText("LOW");
-                }
-               else if ((resinID >= 2 && resinID <= 4) | resinID == 6) {
-                    ecoScoreLabel.setText("VERY LOW");
-                }
-                return ecoScoreLabel.getText();
+            if (resinID == 1 || resinID == 5 || resinID == 7) {
+                ecoScoreLabel.setText("LOW");
+            } else if ((resinID >= 2 && resinID <= 4) | resinID == 6) {
+                ecoScoreLabel.setText("VERY LOW");
             }
-           else if (disposalInput.contains("Sorting Facility")) {
-                if (resinID == 2) {
-                    ecoScoreLabel.setText("HIGH");
-                }
-              else  if (resinID == 1 || resinID >= 3 || resinID <= 7) {
-                    ecoScoreLabel.setText("MEDIUM");
-                }
-                return ecoScoreLabel.getText();
+            return ecoScoreLabel.getText();
+        } else if (disposalInput.contains("Sorting Facility")) {
+            if (resinID == 2) {
+                ecoScoreLabel.setText("HIGH");
+            } else if (resinID == 1 || resinID >= 3 || resinID <= 7) {
+                ecoScoreLabel.setText("MEDIUM");
             }
-            if (disposalInput.contains("Select")) {
-
-                commentLabel.setText("");
-
-                SpinnerValueFactory<Integer> valueFactory =
-                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
-                resinSpinner.setValueFactory(valueFactory);
-
-            } else {
-                throw new IllegalArgumentException("Error in generating ecoScore");
-            }
-            System.out.println("ZZZ" + ecoScoreLabel.getText());
             return ecoScoreLabel.getText();
         }
+        if (disposalInput.contains("Select")) {
+
+            commentLabel.setText("");
+
+            SpinnerValueFactory < Integer > valueFactory =
+                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
+            resinSpinner.setValueFactory(valueFactory);
+
+        } else {
+            throw new IllegalArgumentException("Error in generating ecoScore");
+        }
+        System.out.println("ZZZ" + ecoScoreLabel.getText());
+        return ecoScoreLabel.getText();
+    }
 
 
 
@@ -292,52 +290,52 @@ private String ecoScoreComment(String ecoScoreLabel) {
         commentLabel.setDisable(true);
         commentLabel.setWrapText(true);
 
-          SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1,7);
+        SpinnerValueFactory < Integer > valueFactory =
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
         resinSpinner.setValueFactory(valueFactory);
         /*
 
         disposalComboBox.getItems().addAll("Recycle", "Garbage", "Local Disposal Facility");*/
         // Validation for Resin Spinner
 
-       TextField resinEditor = resinSpinner.getEditor();
+        TextField resinEditor = resinSpinner.getEditor();
 
-       resinEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
-           System.out.printf("Old Resin ID: %s New Resin ID: %s%n", oldValue, newValue);
-           try {
-               Integer.parseInt(newValue); //Checks to see if it's an int
-               materialLoader(Integer.parseInt(newValue));  // If so, then I can pass this new Value into a function that will change the material
-           } catch (NumberFormatException e) {
-               resinEditor.setText(oldValue);
-               objectLabel.setTextFill(RED);
-               objectLabel.setText("Only whole numbers are allowed!");
-           }
+        resinEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                System.out.printf("Old Resin ID: %s New Resin ID: %s%n", oldValue, newValue);
+        try {
+            Integer.parseInt(newValue); //Checks to see if it's an int
+            materialLoader(Integer.parseInt(newValue)); // If so, then I can pass this new Value into a function that will change the material
+        } catch (NumberFormatException e) {
+            resinEditor.setText(oldValue);
+            objectLabel.setTextFill(RED);
+            objectLabel.setText("Only whole numbers are allowed!");
+        }
 
-           resinSpinner.setEditable(true);
-       });
+        resinSpinner.setEditable(true);
+        });
         disposalComboBox.getItems().addAll("Select", "Recycle", "Compost", "Garbage", "Sorting Facility");
         disposalComboBox.setEditable(true);
         TextField disposalEditor = disposalComboBox.getEditor();
 
-       disposalEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
-          System.out.printf("Old Disposal Method: %s, New Disposal Method: %s%n", oldValue, newValue);
+        disposalEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                System.out.printf("Old Disposal Method: %s, New Disposal Method: %s%n", oldValue, newValue);
 
-          String tossValue = newValue;
-           try {
-               disposalComboBox.setEditable(true);
-               System.out.println(resinSpinner.getValue() + newValue + materialLabel.getText());      // Need to check to see when Resin and Disposal are Blank
-               commentGenerator(resinSpinner.getValue(), tossValue, materialLabel.getText());
-               //ecoScoreGeneration(resinSpinner.getValue(), newValue);
+        String tossValue = newValue;
+        try {
+            disposalComboBox.setEditable(true);
+            System.out.println(resinSpinner.getValue() + newValue + materialLabel.getText()); // Need to check to see when Resin and Disposal are Blank
+            commentGenerator(resinSpinner.getValue(), tossValue, materialLabel.getText());
+            //ecoScoreGeneration(resinSpinner.getValue(), newValue);
 
-           } catch(IllegalArgumentException e) {
-               disposalComboBox.setValue(oldValue);
-               objectLabel.setTextFill(RED);
-               objectLabel.setText("Only proper disposal methods allowed!");
-           }
-           disposalComboBox.setEditable(true);
+        } catch (IllegalArgumentException e) {
+            disposalComboBox.setValue(oldValue);
+            objectLabel.setTextFill(RED);
+            objectLabel.setText("Only proper disposal methods allowed!");
+        }
+        disposalComboBox.setEditable(true);
 
 
-       });
+        });
 
 
     }
