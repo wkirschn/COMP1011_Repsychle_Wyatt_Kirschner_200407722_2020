@@ -24,6 +24,8 @@
 
 package sample;
 
+import java.sql.SQLException;
+
 public class RepsychleObjectContainer {
     private int id; // This will be the Primary key
     private int resinIdCode;
@@ -33,25 +35,49 @@ public class RepsychleObjectContainer {
     //As I am putting these into strings, I can create different Hashlists or arraylists to read out of later
 
     private final String nameRegEx = "[A-Za-z\\s]{1,50}"; //Take another look
-    private final String commentRegEx = "^[a-zA-Z0-9!.~`$%^\\s]{0,255}"; // Might need to expand limits
 
-    public RepsychleObjectContainer(int id, int resinIdCode, String brandName, String objectName, String material, String disposal, String ecoScore, String ecoDoc) {
+
+
+
+
+    // Use this to create the object since the primary key is automatically incremented so no need to pass a predefined Primary Key
+
+    public RepsychleObjectContainer(int id, String brandName, String objectName, int resinIdCode,  String material, String disposal, String ecoDoc, String ecoScore) {
         setId(id);
-        setResinIdCode(resinIdCode);
         setBrandName(brandName);
         setObjectName(objectName);
+        setResinIdCode(resinIdCode);
         setMaterial(material);
         setDisposal(disposal);
-        setEcoScore(ecoScore);
         setEcoDoc(ecoDoc);
+        setEcoScore(ecoScore);
+    }
 
+    public RepsychleObjectContainer(String brandName, String objectName, int resinIdCode,  String material, String disposal, String ecoDoc, String ecoScore) {
+
+        setBrandName(brandName);
+        setObjectName(objectName);
+        setResinIdCode(resinIdCode);
+        setMaterial(material);
+        setDisposal(disposal);
+        setEcoDoc(ecoDoc);
+        setEcoScore(ecoScore);
+
+        try {
+            int id = DBUtility.insertNewProduct(this);
+            setId(id);
+            System.out.println("INSERTED");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    private void setId(int id) {
         if (id > 0) { // Okay for now, but there is nothing to stop me from overwriting a previously created ID
             this.id = id;
         } else {
@@ -183,8 +209,8 @@ public class RepsychleObjectContainer {
 
 
     public void setMaterial(String material) {
-        if (material.matches(nameRegEx)) {
-            this.material = material; // Validation for the Regex
+        if (material != null) {
+            this.material = material;
         }
     }
 
@@ -209,9 +235,8 @@ public class RepsychleObjectContainer {
     }
 
     public void setEcoScore(String ecoScore) {
-        if (ecoScore.matches(nameRegEx)) {
-
-            this.objectName = objectName;
+        if (ecoScore != null) {
+            this.ecoScore = ecoScore;
         } else {
             throw new IllegalArgumentException("Please ensure a valid EcoScore rating is produced!");
         }
@@ -222,7 +247,7 @@ public class RepsychleObjectContainer {
     }
 
     public void setEcoDoc(String ecoDoc) {
-        if (ecoDoc.matches(commentRegEx)) {
+        if (ecoDoc != null) {
             this.ecoDoc = ecoDoc;
         } else {
             throw new IllegalArgumentException("Please enter a valid comment regarding the product!");
@@ -230,10 +255,8 @@ public class RepsychleObjectContainer {
     }
 
     public String toString() {
-        return String.format("Resin ID: %s, Brand Name: %s, Product Name: %s, Material: %s, Disposal Method: %s, EcoScore: %s, Comments: %s",
-                resinIdCode, brandName, objectName, material, disposal, ecoScore, ecoDoc);
-
-
+        return String.format("Brand Name: %s, Product Name: %s, Resin ID: %d, Material: %s, Disposal Method: %s, Comment: %s, EcoScore: %s",
+                brandName, objectName, resinIdCode, material, disposal, ecoDoc, ecoScore);
 
     }
 

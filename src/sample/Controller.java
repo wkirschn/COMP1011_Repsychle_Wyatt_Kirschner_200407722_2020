@@ -30,10 +30,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextFlow;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.RED;
@@ -84,17 +83,45 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void statisticsButton(ActionEvent event) {
+    void statisticsButton(ActionEvent event) throws SQLException, InterruptedException {
         // There will be a check where it will determine if there is anything in the database table. If not, it will be asked to add an item first to the database
-
+        infoLabel.setText("");
+        if(DBUtility.getAllProducts().isEmpty()) {
+            infoLabel.setText("Please add an entry before viewing the statistics!");
+            
+        }
+        else {
+            infoLabel.setText("Switching to Statistics...");
+        }
     }
 
     @FXML
     void submitButton(ActionEvent event) {
         System.out.println("Send!");
         // This is to add the item to the database
-        if (inputValidation() == true) {
+        if (inputValidation()) {
             System.out.println("VALIDATION PASSES");
+            try {
+                RepsychleObjectContainer newObject = new RepsychleObjectContainer(
+                        brandNameTextField.getText(),
+                        productNameTextField.getText(),
+                        resinSpinner.getValue(),
+                        materialLabel.getText(),
+                        disposalComboBox.getValue(),
+                        commentLabel.getText(),
+                        ecoScoreLabel.getText()
+                );
+
+                System.out.println("This works!");
+                System.out.println(newObject.toString());
+            }   catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                infoLabel.setText(e.getMessage());
+            }
+
+
+
+
         } else {
             throw new IllegalArgumentException("Make sure that the fields are properly filled out!");
         }
@@ -166,6 +193,8 @@ public class Controller implements Initializable {
 
 
     public void commentGenerator(int resinId, String disposalMethod, String material) {
+        commentLabel.setText("");
+        infoLabel.setText("");
         System.out.println(disposalMethod + "WOAH");
         String comment = ("You have selected a product rated with a resin ID of: " + resinId + " and you are attempting to ");
 
@@ -195,11 +224,19 @@ public class Controller implements Initializable {
             commentLabel.setText(comment);
         } else {
 
+            if(resinSpinner.getValue() != 1) {
+                infoLabel.setText("Please select a disposal method!");
+                commentLabel.setText(null);
 
+            }
+            else {
+                infoLabel.setText("Please select a disposal method!");
+                commentLabel.setText(null);
+                SpinnerValueFactory < Integer > valueFactory =
+                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
+                resinSpinner.setValueFactory(valueFactory);
+            }
 
-            SpinnerValueFactory < Integer > valueFactory =
-                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
-            resinSpinner.setValueFactory(valueFactory);
 
         }
 
@@ -305,6 +342,13 @@ public class Controller implements Initializable {
         try {
             Integer.parseInt(newValue); //Checks to see if it's an int
             materialLoader(Integer.parseInt(newValue)); // If so, then I can pass this new Value into a function that will change the material
+            if(disposalComboBox.getValue() != null) {
+                commentGenerator(resinSpinner.getValue(), disposalComboBox.getValue(), materialLabel.getText());
+
+            }
+            else  {
+                System.out.println("S");
+            }
         } catch (NumberFormatException e) {
             resinEditor.setText(oldValue);
             objectLabel.setTextFill(RED);
@@ -324,7 +368,7 @@ public class Controller implements Initializable {
         try {
             disposalComboBox.setEditable(true);
             System.out.println(resinSpinner.getValue() + newValue + materialLabel.getText()); // Need to check to see when Resin and Disposal are Blank
-            commentGenerator(resinSpinner.getValue(), tossValue, materialLabel.getText());
+            commentGenerator(resinSpinner.getValue(), newValue, materialLabel.getText());
             //ecoScoreGeneration(resinSpinner.getValue(), newValue);
 
         } catch (IllegalArgumentException e) {

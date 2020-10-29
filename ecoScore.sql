@@ -13,10 +13,10 @@ CREATE TABLE objects
 (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 brandName VARCHAR(50),
 productName VARCHAR (50),
-resinID BIT (1),
+resinID INT (10),
 material VARCHAR(75),
 disposal VARCHAR(15),
-ecoComment VARCHAR(255),
+ecoComment VARCHAR(500),
 ecoScore VARCHAR(15)
 );
 
