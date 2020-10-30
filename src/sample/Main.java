@@ -27,16 +27,18 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        Parent root = FXMLLoader.load(getClass().getResource("addItem.fxml"));
         primaryStage.setScene(new Scene(root, 900, 775));
-        primaryStage.setTitle("RePsychle - Wyatt Kirschner - 200407722");
+        primaryStage.setTitle("RePsychle - Add Items");
         primaryStage.show();
     }
 

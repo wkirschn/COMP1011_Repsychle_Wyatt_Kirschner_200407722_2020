@@ -2,6 +2,7 @@ package sample;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DBUtility {
     private static String username = "root";
@@ -62,7 +63,8 @@ public class DBUtility {
     // Now let's attempt to retrieve the database data we have inserted!
     public static ArrayList<RepsychleObjectContainer> getAllProducts() throws SQLException {
 
-    ArrayList<RepsychleObjectContainer> objects = new ArrayList<>();
+
+        ArrayList<RepsychleObjectContainer> objects = new ArrayList<>();
         Connection conn = null;
         Statement statement  = null;
         ResultSet resultSet = null;

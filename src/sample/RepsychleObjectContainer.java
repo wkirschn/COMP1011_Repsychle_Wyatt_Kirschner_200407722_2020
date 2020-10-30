@@ -18,6 +18,9 @@
 
         I will then need to place this into the database and then the charts / table
 
+    Image Sources:
+        Resin ID -  http://www.trashforce.org/content.asp?q_areaprimaryid=3&q_areasecondaryid=44&q_areatertiaryid=0&q_articleid=32
+        ImageView - https://www.tutorialspoint.com/javafx/javafx_images.htm
 
  */
 
