@@ -259,9 +259,16 @@ public class RepsychleObjectContainer {
 
     public String toString() {
         return String.format("Brand Name: %s, Product Name: %s, Resin ID: %d, Material: %s, Disposal Method: %s, Comment: %s, EcoScore: %s",
-                brandName, objectName, resinIdCode, material, disposal, ecoDoc, ecoScore);
+              brandName, objectName, resinIdCode, material, disposal, ecoDoc, ecoScore);
 
     }
+
+    public String toCommentString(String brandNameTable, String productNameTable, int resinIdTable, String materialTable, String disposalTable, String ecoCommentTable, String ecoScoreTable) {
+        return String.format("Brand Name: %s \n\nProduct Name: %s\n\nResin ID: %d\n\nMaterial: %s\n\nDisposal Method: %s\n\nComment: %s\n\nEcoScore: %s",
+                brandNameTable, productNameTable, resinIdTable, materialTable, disposalTable, ecoCommentTable, ecoScoreTable);
+    }
+
+
 
 
 

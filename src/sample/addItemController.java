@@ -36,8 +36,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -97,24 +99,33 @@ public class addItemController implements Initializable {
         Platform.exit();
 
     }
+    @FXML
+    public void parseConnection(ActionEvent event, String newView) throws SQLException, IOException {
+        infoLabel.setText("");
+        if(DBUtility.getAllProducts().isEmpty()) {
+            infoLabel.setText("Please add an entry before viewing the statistics!");
+            infoLabel.setText("Enter a new entry or view the statistics!");
+        }
+        else {
+            infoLabel.setText("Switching to Statistics...");
+            transitionScene(event, "databaseTable.fxml", 950, 400, "RePsychle - View Table");
+
+        }
+    }
+    @FXML
+    public void transitionScene(ActionEvent event, String newView, int width, int height, String setTitleName) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(newView));
+        Stage primaryStage = (Stage) ((javafx.scene.Node)event.getSource()).getScene().getWindow();
+
+        primaryStage.setScene(new Scene(root, width, height));
+        primaryStage.setTitle(setTitleName);
+        primaryStage.show();
+    }
 
     @FXML
     void statisticsButton(ActionEvent event) throws SQLException, IOException {
         // There will be a check where it will determine if there is anything in the database table. If not, it will be asked to add an item first to the database
-        infoLabel.setText("");
-        if(DBUtility.getAllProducts().isEmpty()) {
-            infoLabel.setText("Please add an entry before viewing the statistics!");
-
-        }
-        else {
-            infoLabel.setText("Switching to Statistics...");
-            Parent root = FXMLLoader.load(getClass().getResource("databaseTable.fxml"));
-            Stage primaryStage = (Stage) ((javafx.scene.Node)event.getSource()).getScene().getWindow();
-
-            primaryStage.setScene(new Scene(root, 800, 400));
-            primaryStage.setTitle("RePsychle - Statistics");
-            primaryStage.show();
-        }
+      parseConnection(event, "databaseTable.fxml");
     }
 
     @FXML
@@ -136,6 +147,9 @@ public class addItemController implements Initializable {
 
                 System.out.println("This works!");
                 System.out.println(newObject.toString());
+                clearInputField();
+
+
             }   catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 infoLabel.setText(e.getMessage());
@@ -150,6 +164,17 @@ public class addItemController implements Initializable {
 
 
 
+
+    }
+
+    public void clearInputField() {
+        brandNameTextField.setText("");
+        productNameTextField.setText("");
+        resinSpinner.getValueFactory().setValue(1);
+        materialLabel.setText("Based on Resin ID");
+        disposalComboBox.setValue("Select");
+        commentLabel.setText("");
+        ecoScoreLabel.setText("Very Low / Low / Medium / High / Very High");
 
     }
 
@@ -184,14 +209,21 @@ public class addItemController implements Initializable {
         }
     }
 
+   /* public void setImage(int resinID) throws FileNotFoundException {      //Figure out how to set the image?
+        switch(resinID){
+            case 1:
+                FileInputStream inputStream = new FileInputStream("C:\\Users\\Owner\\IdeaProjects\\COMP1011_RePsychle_Wyatt_Kirschner_200407722_V4\\src\\sample\\img\\1.gif");
+                resinImage.setImage(Image.impl_fromPlatformImage(inputStream));
+
+        }
+    }*/
+
 
     public void materialLoader(int resinID)  { // When it comes to creating an object, then I will collect the information to parse into the database
+
         if (resinID >= 1 || resinID <= 7) {
             if (resinID == 1) {
                 materialLabel.setText("PETE: Polyethylene Terephthalate");
-
-
-                //resinImage.setImage(one);
 
             }
             if (resinID == 2) {
@@ -256,13 +288,16 @@ public class addItemController implements Initializable {
                 commentLabel.setText(null);
 
             }
-            else {
+            if (disposalMethod.contains("Select")){
                 infoLabel.setText("Please select a disposal method!");
                 commentLabel.setText(null);
-                SpinnerValueFactory < Integer > valueFactory =
-                        new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
-                resinSpinner.setValueFactory(valueFactory);
+
+              //  SpinnerValueFactory < Integer > valueFactory =
+                //        new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
+                //resinSpinner.setValueFactory(valueFactory);
+               resinSpinner.getValueFactory().setValue(1);
             }
+
 
 
         }

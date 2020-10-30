@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,31 +13,49 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <AnchorPane prefHeight="391.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.DatabaseTableController">
    <children>
-      <HBox layoutX="3.0" layoutY="50.0" prefHeight="251.0" prefWidth="739.0">
+      <HBox layoutX="3.0" layoutY="50.0" prefHeight="251.0" prefWidth="1002.0">
          <children>
-            <TableView fx:id="databaseTable" prefHeight="251.0" prefWidth="694.0">
-              <columns>
-                <TableColumn fx:id="idTable" prefWidth="41.59994584321976" text="ID" />
-                <TableColumn fx:id="brandNameTable" prefWidth="75.20000839233398" text="Brand Name" />
-                  <TableColumn fx:id="productNameTable" prefWidth="94.4000244140625" text="Product Name" />
-                  <TableColumn fx:id="resinIdTable" prefWidth="58.39997863769531" text="Resin ID" />
-                  <TableColumn fx:id="materialTable" prefWidth="88.0" text="Material" />
-                  <TableColumn fx:id="disposalTable" prefWidth="89.60003662109375" text="Disposal" />
-                  <TableColumn fx:id="commentTable" prefWidth="118.39999389648438" text="Comment" />
-                  <TableColumn fx:id="ecoScoreTable" prefWidth="125.60003662109375" text="EcoScore" />
-              </columns>
-            </TableView>
+            <GridPane prefHeight="251.0" prefWidth="955.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="689.0" minWidth="10.0" prefWidth="564.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.0" minWidth="0.0" prefWidth="125.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TableView fx:id="databaseTable" prefHeight="251.0" prefWidth="570.0">
+                    <columns>
+                      <TableColumn fx:id="idTable" prefWidth="41.59994584321976" text="ID" />
+                      <TableColumn fx:id="brandNameTable" prefWidth="75.20000839233398" text="Brand Name" />
+                        <TableColumn fx:id="productNameTable" prefWidth="94.4000244140625" text="Product Name" />
+                        <TableColumn fx:id="resinIdTable" prefWidth="58.39997863769531" text="Resin ID" />
+                        <TableColumn fx:id="materialTable" prefWidth="88.0" text="Material" />
+                        <TableColumn fx:id="disposalTable" prefWidth="89.60003662109375" text="Disposal" />
+                        <TableColumn fx:id="commentTable" prefWidth="118.39999389648438" text="Comment" />
+                        <TableColumn fx:id="ecoScoreTable" prefWidth="125.60003662109375" text="EcoScore" />
+                    </columns>
+                  </TableView>
+                  <TextArea fx:id="infoTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="25.0" right="25.0" />
+                     </GridPane.margin>
+                  </TextArea>
+               </children>
+               <padding>
+                  <Insets left="25.0" right="25.0" />
+               </padding>
+            </GridPane>
          </children>
          <padding>
-            <Insets left="25.0" right="25.0" />
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
       </HBox>
-      <HBox alignment="CENTER" layoutY="301.0" prefHeight="100.0" prefWidth="600.0">
+      <HBox alignment="CENTER" layoutY="301.0" prefHeight="100.0" prefWidth="1005.0">
          <children>
-            <GridPane alignment="CENTER" prefHeight="99.0" prefWidth="599.0">
+            <GridPane alignment="CENTER" prefHeight="50.0" prefWidth="951.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -48,7 +67,7 @@
               </rowConstraints>
                <children>
                   <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButton" text="Exit Program" textAlignment="CENTER" GridPane.columnIndex="3" />
-                  <Button mnemonicParsing="false" text="View Chart" textAlignment="CENTER" GridPane.columnIndex="2" />
+                  <Button fx:id="viewChartButton" mnemonicParsing="false" onAction="#viewChartButton" text="View Chart" textAlignment="CENTER" GridPane.columnIndex="2" />
                   <Button fx:id="addProductButton" mnemonicParsing="false" onAction="#addProductButton" text="Add Product" textAlignment="CENTER" GridPane.columnIndex="1" />
                   <ImageView fx:id="resinImage" fitHeight="104.0" fitWidth="149.0" pickOnBounds="true" preserveRatio="true" />
                </children>
@@ -58,10 +77,10 @@
             </GridPane>
          </children>
          <padding>
-            <Insets left="50.0" />
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </padding>
       </HBox>
-      <ImageView fitHeight="43.0" fitWidth="200.0" layoutX="273.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="43.0" fitWidth="200.0" layoutX="403.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/Green%20Logo.png" />
          </image>

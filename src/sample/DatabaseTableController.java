@@ -10,9 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -24,6 +22,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.ResourceBundle;
+
+import static javafx.scene.paint.Color.RED;
 
 public class DatabaseTableController implements Initializable {
 
@@ -46,7 +46,7 @@ public class DatabaseTableController implements Initializable {
     private TableColumn<RepsychleObjectContainer, String> materialTable;
 
     @FXML
-    private TableColumn<RepsychleObjectContainer, String>disposalTable;
+    private TableColumn<RepsychleObjectContainer, String> disposalTable;
 
     @FXML
     private TableColumn<RepsychleObjectContainer, String> commentTable;
@@ -56,6 +56,17 @@ public class DatabaseTableController implements Initializable {
 
     @FXML
     private ImageView resinImage;
+
+    @FXML
+    private TextArea infoTextArea;
+
+    @FXML
+    private Button viewChartButton;
+
+    @FXML
+    void viewChartButton(ActionEvent event) throws IOException {
+        new addItemController().transitionScene(event, "viewChart.fxml", 900, 775, "RePsychle - View Chart");
+    }
 
     @FXML
     void exitButton(ActionEvent event) throws InterruptedException {
@@ -68,19 +79,15 @@ public class DatabaseTableController implements Initializable {
     }
 
     @FXML
-    void addProductButton(ActionEvent event) throws IOException {
+    void addProductButton(ActionEvent event) throws IOException, SQLException {
+        new addItemController().transitionScene(event, "addItem.fxml", 900, 775, "RePsychle - Add Items");
 
-        Parent root = FXMLLoader.load(getClass().getResource("addItem.fxml"));
-        Stage primaryStage = (Stage) ((javafx.scene.Node)event.getSource()).getScene().getWindow();
-        primaryStage.setScene(new Scene(root, 900, 775));
-        primaryStage.setTitle("RePsychle - Add Items");
-        primaryStage.show();
     }
-
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // infoTextArea.setDisable(true);
         try {
             ArrayList<RepsychleObjectContainer> objects = DBUtility.getAllProducts();
             ObservableList<RepsychleObjectContainer> productList = FXCollections.observableArrayList(objects);
@@ -99,11 +106,37 @@ public class DatabaseTableController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ///    public String toCommentString(String brandNameTable, String productNameTable, int resinIdTable, String materialTable, String disposalTable, String ecoCommentTable, String ecoScoreTable) {
 
+        databaseTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            //System.out.printf("Old Resin ID: %s New Resin ID: %s%n", oldValue, newValue);
+            try {
+                System.out.println(newValue.getEcoScore());
+                // I didn't want to create a new toString, so I've decided to just build a custom toCommentString to have better organization
+                infoTextArea.setText(newValue.toCommentString(newValue.getBrandName(), newValue.getObjectName(), newValue.getResinIdCode(), newValue.getMaterial(), newValue.getDisposal(), newValue.getEcoDoc(), newValue.getEcoScore()));
+
+
+
+
+
+
+            } catch (NumberFormatException e) {
+                //  resinEditor.setText(oldValue);
+                //objectLabel.setTextFill(RED);
+                //objectLabel.setText("Only whole numbers are allowed!");
+            }
+
+            //resinSpinner.setEditable(true);
+        });
 
 
         System.out.println();
 
 
+
     }
+
+
 }
+
+

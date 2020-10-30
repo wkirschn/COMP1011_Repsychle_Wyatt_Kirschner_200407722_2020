@@ -118,7 +118,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ImageView fitHeight="132.0" fitWidth="154.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="resinImage" fitHeight="132.0" fitWidth="154.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/White%20Logo.png" />
                                  </image>
