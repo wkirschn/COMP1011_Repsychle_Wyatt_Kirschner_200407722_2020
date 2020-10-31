@@ -270,6 +270,9 @@ public class RepsychleObjectContainer {
 
     }
 
+    // I could have made these inside of the viewChartController, but I find it much more neat inside the RepsychleObjectContainer
+
+
     public String toCommentString(String brandNameTable, String productNameTable, int resinIdTable, String materialTable, String disposalTable, String ecoCommentTable, String ecoScoreTable) {
         return String.format("Brand Name: %s \n\nProduct Name: %s\n\nResin ID: %d\n\nMaterial: %s\n\nDisposal Method: %s\n\nComment: %s\n\nEcoScore: %s",
                 brandNameTable, productNameTable, resinIdTable, materialTable, disposalTable, ecoCommentTable, ecoScoreTable);
@@ -278,6 +281,15 @@ public class RepsychleObjectContainer {
     public String toEcoScorePie(int veryLow, int low, int medium, int high, int veryHigh) {
         return String.format("Eco Score:\n\nVery Low: %d\n\nLow: %d\n\nMedium: %d\n\nHigh: %d\n\nVery High:%d", veryLow, low, medium, high, veryHigh );
     }
+
+    public String toResinIdPie(int resinOne, int resinTwo, int resinThree, int resinFour, int resinFive, int resinSix, int resinSeven) {
+        return String.format("Resin ID:\n\nOne: %d\n\nTwo: %d\n\nThree: %d\n\nFour: %d\n\nFive:%d\n\nSix: %d\n\nSeven: %d", resinOne, resinTwo, resinThree, resinFour, resinFive, resinSix, resinSeven);
+    }
+
+    public String toDisposalPie(int reycleCounter, int compostCounter, int garbageCounter, int sortingCounter) {
+        return String.format("Disposal Methods:\n\nRecycle: %d\n\nCompost: %d\n\nGarbage: %d\n\nSorting Facility: %d", reycleCounter, compostCounter, garbageCounter, sortingCounter);
+    }
+
 
 
 
