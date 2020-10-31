@@ -1,4 +1,251 @@
+/*
+
+
+
+
+    Resources:
+        https://docs.oracle.com/javafx/2/charts/pie-chart.htm
+        https://www.tutorialspoint.com/javafx/pie_chart.htm
+ */
+
 package sample;
 
-public class viewChartController {
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ResourceBundle;
+
+public class viewChartController implements Initializable {
+
+    @FXML
+    private PieChart ecoScorePieChart;
+
+
+    @FXML
+    private Button addProductButton;
+
+    @FXML
+    private Button viewTableButton;
+
+    @FXML
+    private Button exitProgramButton;
+
+    @FXML
+    private TextArea pieGraphTextArea;
+
+    @FXML
+    private RadioButton ecoScoreRadioButton;
+
+    @FXML
+    private RadioButton resinIdRadioButton;
+
+    @FXML
+    private RadioButton disposalRadioButton;
+
+    @FXML
+    void addProductButton(ActionEvent event) throws IOException {
+        new addItemController().transitionScene(event, "viewChart.fxml", 800, 600, "RePsychle - View Chart");
+    }
+
+    @FXML
+    void exitProgramButton(ActionEvent event) throws InterruptedException {
+
+        Thread.sleep(500);
+        Platform.exit();
+    }
+
+    @FXML
+    void viewTableProduct(ActionEvent event) throws IOException {
+       new addItemController().transitionScene(event, "databaseTable.fxml", 950, 400, "RePsychle - View Table");
+    }
+
+
+    @FXML
+private void setEcoScorePieChart() {
+
+        if(ecoScoreRadioButton.isSelected() == false) {
+            ecoScoreRadioButton.setSelected(true);
+        }
+        if(resinIdRadioButton.isSelected() == true) {
+            resinIdRadioButton.setSelected(false);
+        }
+        if(disposalRadioButton.isSelected() == true) {
+            disposalRadioButton.setSelected(false);
+        }
+
+    try{
+        ArrayList<RepsychleObjectContainer> objects = DBUtility.getAllProducts();
+
+        // Not the best soultion, but the best to my knowledge unless I parsed a special SQL statement
+        // If I did that, it would defeat the purpose of using getEcoScore etc if I tailored it, no?
+
+        int veryLow = 0, low = 0, medium = 0, high = 0, veryHigh = 0;
+
+        for(int n = 0; n < objects.size() ; n++) {
+            if(objects.get(n).getEcoScore().contains("VERY LOW")){
+                veryLow++;
+                System.out.println(veryLow);
+            }
+            if(objects.get(n).getEcoScore().contains("LOW")){
+                low++;
+                System.out.println(low);
+            }
+            if(objects.get(n).getEcoScore().contains("MEDIUM")){
+                medium++;
+            }
+            if(objects.get(n).getEcoScore().contains("HIGH")){
+                high++;
+            }
+            if(objects.get(n).getEcoScore().contains("VERY HIGH")){
+                veryHigh++;
+            }
+        }
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        if(veryLow > 0) {
+            pieChartData.add(new PieChart.Data("VERY LOW", veryLow));
+        }
+        if(low > 0) {
+            pieChartData.add(new PieChart.Data("LOW", low));
+        }
+        if(medium > 0) {
+            pieChartData.add(new PieChart.Data("MEDIUM", medium));
+        }
+        if(high > 0) {
+            pieChartData.add(new PieChart.Data("HIGH", high));
+        }
+        if(veryHigh > 0) {
+            pieChartData.add(new PieChart.Data("VERY HIGH", veryHigh));
+        }
+        pieGraphTextArea.setText(new RepsychleObjectContainer().toEcoScorePie(veryLow, low, medium, high, veryHigh));
+        //  Using a counter for how many matching instances, then I can insert into the pie chart....
+        ecoScorePieChart.setData(pieChartData);
+    }
+    catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+
+
 }
+
+@FXML
+private void setResinIdPieChart() {
+
+
+    if(resinIdRadioButton.isSelected() == false) {
+        resinIdRadioButton.setSelected(true);
+    }
+    if(disposalRadioButton.isSelected() == true) {
+        disposalRadioButton.setSelected(false);
+    }
+    if(ecoScoreRadioButton.isSelected() == false) {
+        ecoScoreRadioButton.setSelected(true);
+    }
+
+    try{
+        ArrayList<RepsychleObjectContainer> objects = DBUtility.getAllProducts();
+
+        // Not the best soultion, but the best to my knowledge unless I parsed a special SQL statement
+        // If I did that, it would defeat the purpose of using getEcoScore etc if I tailored it, no?
+
+        int veryLow = 0, low = 0, medium = 0, high = 0, veryHigh = 0;
+
+        for(int n = 0; n < objects.size() ; n++) {
+            if(objects.get(n).getEcoScore().contains("VERY LOW")){
+                veryLow++;
+                System.out.println(veryLow);
+            }
+            if(objects.get(n).getEcoScore().contains("LOW")){
+                low++;
+                System.out.println(low);
+            }
+            if(objects.get(n).getEcoScore().contains("MEDIUM")){
+                medium++;
+            }
+            if(objects.get(n).getEcoScore().contains("HIGH")){
+                high++;
+            }
+            if(objects.get(n).getEcoScore().contains("VERY HIGH")){
+                veryHigh++;
+            }
+        }
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        if(veryLow > 0) {
+            pieChartData.add(new PieChart.Data("VERY LOW", veryLow));
+        }
+        if(low > 0) {
+            pieChartData.add(new PieChart.Data("LOW", low));
+        }
+        if(medium > 0) {
+            pieChartData.add(new PieChart.Data("MEDIUM", medium));
+        }
+        if(high > 0) {
+            pieChartData.add(new PieChart.Data("HIGH", high));
+        }
+        if(veryHigh > 0) {
+            pieChartData.add(new PieChart.Data("VERY HIGH", veryHigh));
+        }
+        pieGraphTextArea.setText(new RepsychleObjectContainer().toEcoScorePie(veryLow, low, medium, high, veryHigh));
+        //  Using a counter for how many matching instances, then I can insert into the pie chart....
+        ecoScorePieChart.setData(pieChartData);
+    }
+    catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+
+
+}
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //String image = "@img/1.png";
+        ecoScoreRadioButton.setSelected(true);
+    setEcoScorePieChart();
+
+
+}
+}
+/*
+try {
+            ArrayList<RepsychleObjectContainer> objects = DBUtility.getAllProducts();
+            ObservableList<RepsychleObjectContainer> productList = FXCollections.observableArrayList(objects);
+            //idTable.setCellFactory(new Callback<TableColumn.CellDataFeatures>);
+
+            idTable.setCellValueFactory(new PropertyValueFactory<>("id"));
+            brandNameTable.setCellValueFactory(new PropertyValueFactory<>("brandName"));
+            productNameTable.setCellValueFactory(new PropertyValueFactory<>("objectName"));
+            resinIdTable.setCellValueFactory(new PropertyValueFactory<>("resinIdCode"));
+            materialTable.setCellValueFactory(new PropertyValueFactory<>("material"));
+            disposalTable.setCellValueFactory(new PropertyValueFactory<>("disposal"));
+            commentTable.setCellValueFactory(new PropertyValueFactory<>("ecoDoc"));
+            ecoScoreTable.setCellValueFactory(new PropertyValueFactory<>("ecoScore"));  // Would have been nice to find a way to custom sort
+            databaseTable.setItems(productList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+ */

@@ -76,6 +76,13 @@ public class RepsychleObjectContainer {
         }
     }
 
+    public RepsychleObjectContainer(String ecoScore) {
+        setEcoScore(ecoScore);
+    }
+    public RepsychleObjectContainer() {
+        // Used to access methods when needed
+    }
+
     public int getId() {
         return id;
     }
@@ -226,10 +233,10 @@ public class RepsychleObjectContainer {
      */
 
     public void setDisposal(String disposal) {
-        if (disposal.equalsIgnoreCase("Recycle") || disposal.equalsIgnoreCase("Garbage") || disposal.equalsIgnoreCase("Compost")) {
+        if (disposal.equalsIgnoreCase("Recycle") || disposal.equalsIgnoreCase("Garbage") || disposal.equalsIgnoreCase("Compost") || disposal.equalsIgnoreCase("Sorting Facility")) {
             this.disposal = disposal;
         } else {
-            throw new IllegalArgumentException("Please enter a disposal method that is either: Recycle, Garbage, Compost!");
+            throw new IllegalArgumentException("Please enter a disposal method that is either: Recycle, Garbage, Compost, or Sorting Facility!");
         }
     }
 
@@ -266,6 +273,10 @@ public class RepsychleObjectContainer {
     public String toCommentString(String brandNameTable, String productNameTable, int resinIdTable, String materialTable, String disposalTable, String ecoCommentTable, String ecoScoreTable) {
         return String.format("Brand Name: %s \n\nProduct Name: %s\n\nResin ID: %d\n\nMaterial: %s\n\nDisposal Method: %s\n\nComment: %s\n\nEcoScore: %s",
                 brandNameTable, productNameTable, resinIdTable, materialTable, disposalTable, ecoCommentTable, ecoScoreTable);
+    }
+
+    public String toEcoScorePie(int veryLow, int low, int medium, int high, int veryHigh) {
+        return String.format("Eco Score:\n\nVery Low: %d\n\nLow: %d\n\nMedium: %d\n\nHigh: %d\n\nVery High:%d", veryLow, low, medium, high, veryHigh );
     }
 
 

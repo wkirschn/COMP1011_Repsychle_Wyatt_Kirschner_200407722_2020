@@ -65,7 +65,7 @@ public class DatabaseTableController implements Initializable {
 
     @FXML
     void viewChartButton(ActionEvent event) throws IOException {
-        new addItemController().transitionScene(event, "viewChart.fxml", 900, 775, "RePsychle - View Chart");
+        new addItemController().transitionScene(event, "viewChart.fxml", 1000, 500, "RePsychle - View Chart");
     }
 
     @FXML

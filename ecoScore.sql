@@ -15,7 +15,7 @@ brandName VARCHAR(50),
 productName VARCHAR (50),
 resinID INT (10),
 material VARCHAR(75),
-disposal VARCHAR(15),
+disposal VARCHAR(30),
 ecoComment VARCHAR(500),
 ecoScore VARCHAR(15)
 );
