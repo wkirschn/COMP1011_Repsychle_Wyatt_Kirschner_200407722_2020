@@ -1,0 +1,18 @@
+.root {
+    -fx-background-color: mintcream;
+}
+
+.label
+{
+    -fx-font-size: 12px;
+    -fx-background-color: mintcream;
+    -fx-border-width: 25%;
+}
+.logoImageView
+{
+
+}
+.addItemLabel
+{
+-fx-font-size: 20px;
+}

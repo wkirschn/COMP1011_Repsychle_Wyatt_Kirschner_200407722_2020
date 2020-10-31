@@ -37,7 +37,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("addItem.fxml"));
-        primaryStage.setScene(new Scene(root, 900, 775));
+        primaryStage.setScene(new Scene(root, 800, 600));
+        root.getStylesheets().add("stylesheet.css");
         primaryStage.setTitle("RePsychle - Add Items");
         primaryStage.show();
     }

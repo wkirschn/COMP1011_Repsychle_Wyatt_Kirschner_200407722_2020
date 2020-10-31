@@ -67,7 +67,7 @@ public class viewChartController implements Initializable {
 
     @FXML
     void addProductButton(ActionEvent event) throws IOException {
-        new addItemController().transitionScene(event, "viewChart.fxml", 800, 600, "RePsychle - View Chart");
+        new addItemController().transitionScene(event, "addItem.fxml", 800, 600, "RePsychle - View Chart");
     }
 
     @FXML
@@ -304,6 +304,7 @@ private void setResinIdPieChart() {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //String image = "@img/1.png";
+
         ecoScoreRadioButton.setSelected(true);
     setEcoScorePieChart();
 

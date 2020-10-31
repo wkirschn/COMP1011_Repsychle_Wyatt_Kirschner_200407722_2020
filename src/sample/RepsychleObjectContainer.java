@@ -1,49 +1,82 @@
-/*
-    Name:       Wyatt Kirschner
-    Student ID: 200407722
-    Date:       10/24/20
-    Notes:
-        I have made some modifications so far. Changed how the Regular Expressions work with the various reasons of
-        data input. I have also started to incorporate how an Add Product scene will limit the scope of entry on
-        certain items. The EcoScore will be generated from the Resin ID, since this rating does state how easy it is
-        to recycle or how harmful the product is!
-
-        I'm planning on having the input of how the item being disposed of generating a comment based on the user's actions.
-
-        The comments section will also be auto generated based the Resin ID selected and the dispsosal method
-
-        I would need to next have functions that will set the label values as required.
-
-        The purpose of this is to generate the hardcode needed to have these objects being created with success
-
-        I will then need to place this into the database and then the charts / table
-
-    Image Sources:
-        Resin ID -  http://www.trashforce.org/content.asp?q_areaprimaryid=3&q_areasecondaryid=44&q_areatertiaryid=0&q_articleid=32
-        ImageView - https://www.tutorialspoint.com/javafx/javafx_images.htm
-
+/**
+ *    Name:       Wyatt Kirschner
+ *    Student ID: 200407722
+ *    Date:       10/24/20
+ *    Notes:
+ *        I have made some modifications so far. Changed how the Regular Expressions work with the various reasons of
+ *        data input. I have also started to incorporate how an Add Product scene will limit the scope of entry on
+ *        certain items. The EcoScore will be generated from the Resin ID, since this rating does state how easy it is
+ *        to recycle or how harmful the product is!
+ *
+ *        I'm planning on having the input of how the item being disposed of generating a comment based on the user's actions.
+ *
+ *        The comments section will also be auto generated based the Resin ID selected and the dispsosal method
+ *
+ *        I would need to next have functions that will set the label values as required.
+ *
+ *        The purpose of this is to generate the hardcode needed to have these objects being created with success
+ *
+ *        I will then need to place this into the database and then the charts / table
+ *
+ *    Image Sources:
+ *         Resin ID -  http://www.trashforce.org/content.asp?q_areaprimaryid=3&q_areasecondaryid=44&q_areatertiaryid=0&q_articleid=32
+ *        ImageView - https://www.tutorialspoint.com/javafx/javafx_images.htm
+ *
  */
-
 
 package sample;
 
 import java.sql.SQLException;
 
+/**
+ *  This is the main class for the RePsychle Application. This will be where I will store my setters, getters,
+ *  and other methods I may need.
+ *
+ */
+
 public class RepsychleObjectContainer {
+    /**
+     *  id is for the Primary Key
+     */
+
     private int id; // This will be the Primary key
+    /**
+     *  resinID is for holding the resinID number that is at the bottom of the item
+     */
     private int resinIdCode;
+    /**
+     * Brand Name is to store the Brand Name
+     * Object Name is used in conjunction with Product Name
+     * Material is for the material type
+     * Disposal is the disposal method used
+     * ecoDoc is used in conjunction with ecoComment or comment
+     * ecoScore is the rating that is given, the higher the better!
+     *
+     */
+
     private String brandName, objectName, material, disposal, ecoDoc, ecoScore;
-    //Name: Marker, Plastic, Recycle
-    // Later on, I will implement different lists so I can have the material name, EcoScore, disposal method
-    //As I am putting these into strings, I can create different Hashlists or arraylists to read out of later
+
+    /**
+     * This is a Regular Expression that is used to ensure that nothing malicious is occurs during entry
+     */
 
     private final String nameRegEx = "[A-Za-z\\s]{1,50}"; //Take another look
 
 
-
-
-
-    // Use this to create the object since the primary key is automatically incremented so no need to pass a predefined Primary Key
+    /**
+     *
+     * @param id
+     * @param brandName
+     * @param objectName
+     * @param resinIdCode
+     * @param material
+     * @param disposal
+     * @param ecoDoc
+     * @param ecoScore
+     *
+     * Use this to create the object since the primary key is automatically incremented so no need to pass a predefined Primary Key
+     * This is used for when I need to insert the product into the Database
+     */
 
     public RepsychleObjectContainer(int id, String brandName, String objectName, int resinIdCode,  String material, String disposal, String ecoDoc, String ecoScore) {
         setId(id);
@@ -56,6 +89,21 @@ public class RepsychleObjectContainer {
         setEcoScore(ecoScore);
     }
 
+    /**
+     *
+     * @param brandName
+     * @param objectName
+     * @param resinIdCode
+     * @param material
+     * @param disposal
+     * @param ecoDoc
+     * @param ecoScore
+     *
+     * Since I don't need to retrieve the Primary Key,
+     * this constructor will retrieve the information from the database when needed and when I need to create objects locally.
+     */
+
+
     public RepsychleObjectContainer(String brandName, String objectName, int resinIdCode,  String material, String disposal, String ecoDoc, String ecoScore) {
 
         setBrandName(brandName);
@@ -66,26 +114,42 @@ public class RepsychleObjectContainer {
         setEcoDoc(ecoDoc);
         setEcoScore(ecoScore);
 
+        /**
+         * When required, I can update the database when needed and insert the primary key as well
+         */
+
         try {
             int id = DBUtility.insertNewProduct(this);
             setId(id);
-            System.out.println("INSERTED");
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public RepsychleObjectContainer(String ecoScore) {
-        setEcoScore(ecoScore);
-    }
+    /**
+     * This is an empty constructor that I can create when I want to access methods outside of this class
+     */
+
+
     public RepsychleObjectContainer() {
-        // Used to access methods when needed
+
     }
+
+    /**
+     * This will return the Primary Key as needed
+     */
 
     public int getId() {
         return id;
     }
+
+    /**
+     * This method will check to see if the Primary Key is greater than 0 to ensure that it's technically able to insert
+     * itself into the objects table
+     * If not, an IllegalArgumentException is thrown
+     * @param id
+     */
 
     private void setId(int id) {
         if (id > 0) { // Okay for now, but there is nothing to stop me from overwriting a previously created ID
@@ -95,9 +159,20 @@ public class RepsychleObjectContainer {
         }
     }
 
+    /**
+     * This will retrieve the resinID
+     */
+
     public int getResinIdCode() {
         return resinIdCode;
     }
+
+    /**
+     * By ensuring that the resinID is within the range of this program, I can have better control of what can be inputted
+     * Another iteration of this program would involve reading from a CSV and matching it as so to see if one would exist
+     * An IllegalArgumentException is thrown if not within the ranges set
+     * @param resinIdCode
+     */
 
     public void setResinIdCode(int resinIdCode) {
         if (resinIdCode >= 0 && resinIdCode <= 7) {
@@ -107,83 +182,32 @@ public class RepsychleObjectContainer {
         }
     }
 
+    /**
+     *  Retrieves the Brand Name
+     */
+
+
     public String getBrandName() {
         return brandName;
     }
 
-    /*
-        Need to generate an EcoScore Percentage (Not even close to being accurate):
-            Size of the Item:
-            Recycle Rating:
-                PETE    -   Polyethylene Terephthalate   -   1   -   High
-                        *   Soft drinks, water, ketchup, and beer bottles, mouthwash bottles, peanut butter containers,
-                            salad dressing, vegetable oil containers
-                        *   Rinse of any foods or contents, place caps into the trash! Rest is good for blue bin!
-                        *   So not the best
-                        *   If it does pass a purity check, then it's turned into polar Polar fleece, fiber, tote bags,
-                        furniture, carpet, paneling, straps, bottles and food containers
-                        (as long as the plastic being recycled meets purity standards and doesn't have hazardous contaminants)
-
-
-                HDPE    -   High-density polyethylene   -   2   -   High
-                        *   Milk jugs; juice bottles; bleach, detergent, and other household cleaner bottles; shampoo bottles;
-                        some trash and shopping bags; motor oil bottles; butter and yogurt tubs; cereal box liners
-                        *   Little leaching of chemicals
-                        *   Rinse of any foods or contents, the most ideal bottle!
-                        *   Laundry detergent bottles, oil bottles, pens, recycling containers,
-                        floor tile, drainage pipe, lumber, benches, doghouses, picnic tables, fencing, shampoo bottles
-
-
-                PVC     -   Polyvinyl Chloride          -   3   -   Low
-                        *   Shampoo and cooking oil bottles, blister packaging, wire jacketing, siding, windows, piping
-                        *   Bad for the environment, since chlorine is part of PVC and can release dioxins during
-                            manufacturing
-                        *   Bad for burning
-                        *   Rarely can be recycled, unless taken to some plastic lumber makers
-                        *   Decks, paneling, mud-flaps, roadway gutters, flooring, cables, speed bumps, mats
-
-
-                LDPE    -   Low-Density Polyethylene    -   4   -   Medium
-                        *   Historically not accepted through American recycling programs
-                        *   Found in squeezable bottles; bread, frozen food, dry cleaning, and shopping bags; tote bags; furniture
-                        *   Recycled into trash can liners and cans, compost bins, shipping envelopes, paneling, lumber,
-                        landscaping ties, floor tile
-
-
-                PP      -   Polypropylene   -   5   -  Medium
-                        *   Good for hot liquids, starting to become more accepted
-                        *   Some yogurt containers, syrup and medicine bottles, caps, straws
-                        *   Can be cleaned and placed in the recycling
-                        *   Caps are still sent to the garbage
-                        *   Signal lights, battery cables, brooms, brushes, auto battery cases, ice scrapers, landscape borders,
-                            bicycle racks, rakes, bins, pallets, trays
-
-                PS      -   Polystyrene     -   6   -   Low
-                        *   Rigid or foam products (Styrofoam)
-                        *   Styrene monomer can leach into food and is a possible carcinogen
-                        *   Disposable plates and cups, meat trays, egg cartons, carry-out containers, Asprin bottles, compact disc cases
-                        *   Not many programs accept them and many manufactures have switched to PET
-                        *   Recycled into Insulation, light switch plates, egg cartons, vents, rulers, foam packaging, carry-out containers
-
-               Other    -   Other   -   7   -   Low
-                        *   Polycarbonate has been shown to be a hormone disruptor, PLA (polylactic acid) is made from plants and is carbon neutral, also falls into this category
-                        *   Found in three- and five-gallon water bottles, bullet-proof materials, sunglasses, DVDs, iPod and Computer Cases, signs and displays
-                            certain food containers, nylon
-                        *   Since they are very different, there will be specific protocols on how to recycle them
-
-
-        Source:     https://www.goodhousekeeping.com/home/g804/recycling-symbols-plastics-460321/
-
+    /**
+     * Checks to see if the Brand Name will match the name Regular Expression to prevent SQL injection
+     * @param brandName
      */
 
 
     public void setBrandName(String brandName) { // If you have a Brand Name, then in the future... have it isolate the
         if (brandName.matches(nameRegEx)) {
-            // Specific CSV or list it can pull from, this is just simple concept
             this.brandName = brandName;
         }
         this.brandName = brandName;
     }
+
+    /**
+     *
+     * @return
+     */
 
     public String getObjectName() {
         return objectName;

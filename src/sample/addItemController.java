@@ -53,6 +53,8 @@ import static javafx.scene.paint.Color.RED;
 public class addItemController implements Initializable {
 
 
+    @FXML
+    private ImageView logoImageView;
 
     @FXML
     private TextField brandNameTextField;
@@ -85,6 +87,9 @@ public class addItemController implements Initializable {
     @FXML
     private ImageView resinImage;
 
+    @FXML
+    private Label addItemLabel;
+
 
 
 
@@ -108,7 +113,7 @@ public class addItemController implements Initializable {
         }
         else {
             infoLabel.setText("Switching to Statistics...");
-            transitionScene(event, "databaseTable.fxml", 950, 400, "RePsychle - View Table");
+            transitionScene(event, "databaseTable.fxml", 1100, 450, "RePsychle - View Table");
 
         }
     }
@@ -116,7 +121,7 @@ public class addItemController implements Initializable {
     public void transitionScene(ActionEvent event, String newView, int width, int height, String setTitleName) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(newView));
         Stage primaryStage = (Stage) ((javafx.scene.Node)event.getSource()).getScene().getWindow();
-
+        root.getStylesheets().add("stylesheet.css");
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.setTitle(setTitleName);
         primaryStage.show();

@@ -122,57 +122,7 @@ public class DBUtility {
     }
 
 
-    // Now let's attempt to retrieve the database data we have inserted!
-    public static ArrayList<RepsychleObjectContainer> getAllEcoScores() throws SQLException {
 
-
-        ArrayList<RepsychleObjectContainer> objects = new ArrayList<>();
-        Connection conn = null;
-        Statement statement  = null;
-        ResultSet resultSet = null;
-
-        try {
-            //  1. Create the connection for the database
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ecoScore", username, password);
-
-            //  2. Create the statement object needed
-            statement = conn.createStatement();
-
-            //  3.  Retrieving the SQL statement
-            resultSet = statement.executeQuery("SELECT ecoScore COUNT(ecoScore) AS ecoTally FROM objects GROUP BY ecoScore");
-
-            //  4.  Results will be obtained
-            while (resultSet.next()) {
-
-                RepsychleObjectContainer newObject = new RepsychleObjectContainer(
-                        resultSet.getString("ecoScore")
-                );
-                objects.add(newObject);
-            }
-
-
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-            if (conn != null) {
-                conn.close();
-            }
-
-            if (statement != null) {
-                statement.close();
-            }
-
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            return objects;
-
-        }
-
-    }
 
 
 
