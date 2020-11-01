@@ -47,7 +47,7 @@
 
   
 
-<h1  class="text-center"><img  src="src/sample/img/White Logo.png" />
+<h1  class="text-center"><img  src="/srcsample/img/RePsychle Logo.png" />
 
 Wyatt Kirschner - COMP1011 - A1 - 200407722</h1>
 
@@ -177,6 +177,12 @@ There are some improvements and changes that I would make to the submission of t
 
 </blockquote>
 <h2> References Used </h2>
+<ol>
+<li>Resin ID -  http://www.trashforce.org/content.asp?q_areaprimaryid=3&q_areasecondaryid=44&q_areatertiaryid=0&q_articleid=32</li>
+<li>ImageView - https://www.tutorialspoint.com/javafx/javafx_images.htm</li>
+<li>https://docs.oracle.com/javafx/2/charts/pie-chart.htm</li>
+<li>https://www.tutorialspoint.com/javafx/pie_chart.htm</li>
+</ol>
 
 </div>
 
@@ -186,7 +192,7 @@ There are some improvements and changes that I would make to the submission of t
 
   
 
-<img  src="src/sample/img/White Logo.png" />
+<img  src="src/sample/img/RePsychle Favicon Icon.png" />
 
   
 

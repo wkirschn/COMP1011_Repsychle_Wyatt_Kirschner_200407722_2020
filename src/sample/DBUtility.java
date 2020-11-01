@@ -1,3 +1,9 @@
+/**
+ *    Name:       Wyatt Kirschner
+ *    Student ID: 200407722
+ *    Date:       11/01/20
+ *    Notes:    All notes will be placed in a README.md
+ */
 package sample;
 
 import javafx.scene.chart.PieChart;
@@ -6,10 +12,22 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This DBUtility class is for creating the connection that is needed for the database to work
+ * The username and password for this database is stated below!
+ */
+
+
 public class DBUtility {
     private static String username = "root";
     private static String password = "";
 
+    /**
+     * This will insert the product into the database and the objects table
+     * @param repsychleObjectContainer
+     * @return
+     * @throws SQLException
+     */
     public static int insertNewProduct(RepsychleObjectContainer repsychleObjectContainer) throws SQLException {
         Connection conn = null;
         PreparedStatement preparedStatement = null;
@@ -22,7 +40,9 @@ public class DBUtility {
             String sql = "INSERT INTO objects (brandName, productName, resinID, material, disposal, ecoComment, ecoScore) VALUES (?,?,?,?,?,?,?)";
 
             //  3. Prime the connection with the ProductID
-            preparedStatement = conn.prepareStatement(sql, new String[]{"id"});
+            preparedStatement = conn.prepareStatement(sql, new String[] {
+                    "id"
+            });
 
             //  4. Binding for the INSERT statement
             preparedStatement.setString(1, repsychleObjectContainer.getBrandName());
@@ -62,13 +82,19 @@ public class DBUtility {
 
 
 
-    // Now let's attempt to retrieve the database data we have inserted!
-    public static ArrayList<RepsychleObjectContainer> getAllProducts() throws SQLException {
+
+    /**
+     * This will return the entries from the objects table from the database
+     * @return
+     * @throws SQLException
+     */
+
+    public static ArrayList < RepsychleObjectContainer > getAllProducts() throws SQLException {
 
 
-        ArrayList<RepsychleObjectContainer> objects = new ArrayList<>();
+        ArrayList < RepsychleObjectContainer > objects = new ArrayList < > ();
         Connection conn = null;
-        Statement statement  = null;
+        Statement statement = null;
         ResultSet resultSet = null;
 
         try {
@@ -98,12 +124,9 @@ public class DBUtility {
             }
 
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (conn != null) {
                 conn.close();
             }

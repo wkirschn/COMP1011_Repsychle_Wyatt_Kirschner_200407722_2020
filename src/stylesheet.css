@@ -4,15 +4,15 @@
 
 .label
 {
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-background-color: mintcream;
     -fx-border-width: 25%;
-}
-.logoImageView
-{
+    -fx-font: calbri;
 
 }
-.addItemLabel
+.imageView
 {
--fx-font-size: 20px;
+-fx-alignment: center;
 }
+
+

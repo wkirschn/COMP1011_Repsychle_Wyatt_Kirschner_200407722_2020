@@ -11,8 +11,8 @@ CREATE DATABASE ecoScore;
 USE ecoScore;
 CREATE TABLE objects
 (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-brandName VARCHAR(50),
-productName VARCHAR (50),
+brandName VARCHAR(100),
+productName VARCHAR (100),
 resinID INT (10),
 material VARCHAR(75),
 disposal VARCHAR(30),

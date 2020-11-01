@@ -1,29 +1,11 @@
-/*
-    Name:       Wyatt Kirschner
-    Student ID: 200407722
-    Date:       10/24/20
-    Notes:
-        I have made some modifications so far. Changed how the Regular Expressions work with the various reasons of
-        data input. I have also started to incorporate how an Add Product scene will limit the scope of entry on
-        certain items. The EcoScore will be generated from the Resin ID, since this rating does state how easy it is
-        to recycle or how harmful the product is!
-
-        I'm planning on having the input of how the item being disposed of generating a comment based on the user's actions.
-
-        The comments section will also be auto generated based the Resin ID selected and the dispsosal method
-
-        I would need to next have functions that will set the label values as required.
-
-        The purpose of this is to generate the hardcode needed to have these objects being created with success
-
-        I will then need to place this into the database and then the charts / table
-
-
+/**
+ *    Name:       Wyatt Kirschner
+ *    Student ID: 200407722
+ *    Date:       11/01/20
+ *    Notes:
+ *        All notes will be placed in a README.md
  */
-
-
 package sample;
-
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -50,49 +32,91 @@ import java.util.ResourceBundle;
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Node;
 import static javafx.scene.paint.Color.RED;
 
+/**
+ * This is the addItemController, this is used to validate and provide the GUI for adding items to the
+ */
+
 public class addItemController implements Initializable {
 
+    /**
+     * This ImageView is for the RePsychle Logo
+     */
 
     @FXML
     private ImageView logoImageView;
 
+    /**
+     * This TextField is for the Brand Name with Regular Expression Validation
+     */
+
     @FXML
     private TextField brandNameTextField;
+
+    /**
+     * This TextField is for the Product Name with Regular Expression Validation
+     */
 
     @FXML
     private TextField productNameTextField;
 
+    /**
+     * This Spinner is for the resin ID by having it set between 1 (including) and 7 (including
+     */
+
     @FXML
     private Spinner < Integer > resinSpinner;
+
+    /**
+     * This ComboBox is for the Disposal Method, by having the following Strings included:
+     * Select (Default), Recycle, Compost, Garbage, Sorting Facility
+     */
 
 
     @FXML
     private ComboBox < String > disposalComboBox;
 
+    /**
+     * This Label is for setting the material, based on the Resin ID
+     */
+
     @FXML
     private Label materialLabel;
+
+    /**
+     * This TextArea will be used to insert the generated ecoComment into the commentLabel. This is generated on the Resin ID and Material.
+     */
 
     @FXML
     private TextArea commentLabel;
 
+    /**
+     * This Label will set the ecoScore, based on the Resin ID and the Material.
+     */
+
     @FXML
     private Label ecoScoreLabel;
+
+    /**
+     * This label is used to output any communication that the application needs to do to inform the user of what is occuring.
+     */
 
     @FXML
     private Label infoLabel;
 
-    @FXML
-    private Label objectLabel;
+    /**
+     * This is for the resinImage that will load when the resinID is selected
+     */
 
     @FXML
     private ImageView resinImage;
 
-    @FXML
-    private Label addItemLabel;
 
 
 
 
+    /**
+     * This is for putting the application to sleep for 500 miliseconds and then exiting
+     */
 
     @FXML
     void exitButton(ActionEvent event) throws InterruptedException {
@@ -104,41 +128,69 @@ public class addItemController implements Initializable {
         Platform.exit();
 
     }
+
+    /**
+     * This is used when checking if we can switch to the Table, if passes, the transitionScene method is called
+     */
+
     @FXML
     public void parseConnection(ActionEvent event, String newView) throws SQLException, IOException {
         infoLabel.setText("");
-        if(DBUtility.getAllProducts().isEmpty()) {
+        if (DBUtility.getAllProducts().isEmpty()) {
             infoLabel.setText("Please add an entry before viewing the statistics!");
-            infoLabel.setText("Enter a new entry or view the statistics!");
-        }
-        else {
+
+        } else {
             infoLabel.setText("Switching to Statistics...");
             transitionScene(event, "databaseTable.fxml", 1100, 450, "RePsychle - View Table");
 
         }
     }
+
+    /**
+     * This is used when I want to pass in the required arguments to transition to a new scene, similar to Main
+     * @param event
+     * @param newView
+     * @param width
+     * @param height
+     * @param setTitleName
+     * @throws IOException
+     */
+
     @FXML
     public void transitionScene(ActionEvent event, String newView, int width, int height, String setTitleName) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(newView));
-        Stage primaryStage = (Stage) ((javafx.scene.Node)event.getSource()).getScene().getWindow();
+        Stage primaryStage = (Stage)((javafx.scene.Node) event.getSource()).getScene().getWindow();
         root.getStylesheets().add("stylesheet.css");
+        primaryStage.getIcons().add(new Image("sample/img/RePsychle Favicon Icon.png"));
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.setTitle(setTitleName);
         primaryStage.show();
     }
 
+    /**
+     * This calls the parseConnection when the Statistics Button is called to check the database table
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
+
+
     @FXML
     void statisticsButton(ActionEvent event) throws SQLException, IOException {
         // There will be a check where it will determine if there is anything in the database table. If not, it will be asked to add an item first to the database
-      parseConnection(event, "databaseTable.fxml");
+        parseConnection(event, "databaseTable.fxml");
     }
+
+    /**
+     * This method is for attempting to add this information to the database
+     * There is also a check to validate if all the fields are filled before execution using inputValidation
+     * If there is an error in parsing this information, then an Illegal Argument Exception is thrown
+     * @param event
+     */
 
     @FXML
     void submitButton(ActionEvent event) {
-        System.out.println("Send!");
-        // This is to add the item to the database
         if (inputValidation()) {
-            System.out.println("VALIDATION PASSES");
             try {
                 RepsychleObjectContainer newObject = new RepsychleObjectContainer(
                         brandNameTextField.getText(),
@@ -149,13 +201,13 @@ public class addItemController implements Initializable {
                         commentLabel.getText(),
                         ecoScoreLabel.getText()
                 );
-
-                System.out.println("This works!");
-                System.out.println(newObject.toString());
                 clearInputField();
+                transitionScene(event, "databaseTable.fxml", 1100, 450, "RePsychle - View Table");
 
 
-            }   catch (IllegalArgumentException e) {
+
+
+            } catch (IllegalArgumentException | IOException e) {
                 e.printStackTrace();
                 infoLabel.setText(e.getMessage());
             }
@@ -172,6 +224,10 @@ public class addItemController implements Initializable {
 
     }
 
+    /**
+     * This resets the fields to the proper values I want displayed when a product is added to the database
+     */
+
     public void clearInputField() {
         brandNameTextField.setText("");
         productNameTextField.setText("");
@@ -182,6 +238,13 @@ public class addItemController implements Initializable {
         ecoScoreLabel.setText("Very Low / Low / Medium / High / Very High");
 
     }
+
+    /**
+     * This is the input validation that I am checking for... If false, then the method will be false and the product won't
+     * be added to the database!
+     * @return
+     */
+
 
     public boolean inputValidation() {
         infoLabel.setTextFill(RED);
@@ -214,17 +277,22 @@ public class addItemController implements Initializable {
         }
     }
 
-   /* public void setImage(int resinID) throws FileNotFoundException {      //Figure out how to set the image?
-        switch(resinID){
-            case 1:
-                FileInputStream inputStream = new FileInputStream("C:\\Users\\Owner\\IdeaProjects\\COMP1011_RePsychle_Wyatt_Kirschner_200407722_V4\\src\\sample\\img\\1.gif");
-                resinImage.setImage(Image.impl_fromPlatformImage(inputStream));
+    /* public void setImage(int resinID) throws FileNotFoundException {      //Figure out how to set the image?
+         switch(resinID){
+             case 1:
+                 FileInputStream inputStream = new FileInputStream("C:\\Users\\Owner\\IdeaProjects\\COMP1011_RePsychle_Wyatt_Kirschner_200407722_V4\\src\\sample\\img\\1.gif");
+                 resinImage.setImage(Image.impl_fromPlatformImage(inputStream));
 
-        }
-    }*/
+         }
+     }*/
 
+    /**
+     * Checks to see what the resinID is, based on the resinID, the material will be set!
+     * If not valid after the resinID check, an Illegal Argument is thrown!
+     * @param resinID
+     */
 
-    public void materialLoader(int resinID)  { // When it comes to creating an object, then I will collect the information to parse into the database
+    public void materialLoader(int resinID) { // When it comes to creating an object, then I will collect the information to parse into the database
 
         if (resinID >= 1 || resinID <= 7) {
             if (resinID == 1) {
@@ -254,67 +322,55 @@ public class addItemController implements Initializable {
         }
     }
 
-
+    /**
+     * This is slightly complicated but it works. This method takes the resinID, disposal method, and the material
+     * Based on what is passed in, the comment will be generated!
+     * The first part of the string is created with the resinID included
+     * Then based on the disposal method, the comment will be added on with the new statement
+     * If select is used, then the comment will be empty
+     * This also calls on the ecoComment method since it's easier to isolate
+     * @param resinId
+     * @param disposalMethod
+     * @param material
+     */
 
     public void commentGenerator(int resinId, String disposalMethod, String material) {
         commentLabel.setText("");
         infoLabel.setText("");
-        System.out.println(disposalMethod + "WOAH");
         String comment = ("You have selected a product rated with a resin ID of: " + resinId + " and you are attempting to ");
-
 
         if (disposalMethod.contains("Recycle")) {
             comment += "recycle an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod));
-            //comment += "recycle an object that contains " + material + ". The ecoScore of the object is ";
-            //comment += outputEcoScore(resinId, disposalMethod) + ". "; //+ ecoScoreComment(outputEcoScore(resinId, disposalMethod));
-
-
-            System.out.println(outputEcoScore(resinId, "Recycle"));
-
             commentLabel.setText(comment);
         } else if (disposalMethod.contains("Compost")) {
             comment += ("compost an object that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
-
-
             commentLabel.setText(comment);
         } else if (disposalMethod.contains("Garbage")) {
             comment += ("place this object in the trash that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
-
             commentLabel.setText(comment);
         } else if (disposalMethod.contains("Sorting Facility")) {
             comment += ("Bring this object to a sorting facility, that contains " + material + ". The ecoScore of the object is " + outputEcoScore(resinId, disposalMethod) + ". " + ecoScoreComment(outputEcoScore(resinId, disposalMethod)));
-
-
             commentLabel.setText(comment);
         } else {
-
-            if(resinSpinner.getValue() != 1) {
+            if (resinSpinner.getValue() != 1) {
                 infoLabel.setText("Please select a disposal method!");
                 commentLabel.setText(null);
-
             }
-            if (disposalMethod.contains("Select")){
+            if (disposalMethod.contains("Select")) {
                 infoLabel.setText("Please select a disposal method!");
                 commentLabel.setText(null);
-
-              //  SpinnerValueFactory < Integer > valueFactory =
-                //        new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
-                //resinSpinner.setValueFactory(valueFactory);
-               resinSpinner.getValueFactory().setValue(1);
+                resinSpinner.getValueFactory().setValue(1);
             }
-
-
-
         }
-
-        System.out.println(comment);
-
-
-
-
-
-
     }
+
+    /**
+     * Based on what is passed in, the ecoScoreComment will return the last piece of the comment, based on the ecoScore
+     * If not, then an Illegal Argument Exception is thrown
+     * @param ecoScoreLabel
+     * @return
+     */
+
     private String ecoScoreComment(String ecoScoreLabel) {
         String ecoScoreComment;
         if (ecoScoreLabel.contains("VERY LOW")) {
@@ -334,13 +390,16 @@ public class addItemController implements Initializable {
             return ecoScoreComment;
         } else {
             throw new IllegalArgumentException("The ecoScore comment cannot be retrieved!");
-
         }
-
     }
 
-
-
+    /**
+     * Based on the resinID and the Disposal Method, the ecoScore is generated
+     * If else, an Illegal Argument Exception is thrown
+     * @param resinID
+     * @param disposalInput
+     * @return
+     */
     // This is to check the disposal input and the resinID to determine the ecoScore
     private String outputEcoScore(int resinID, String disposalInput) {
         //ecoScoreLabel.setText("ERROR");
@@ -376,18 +435,22 @@ public class addItemController implements Initializable {
 
             commentLabel.setText("");
 
-            SpinnerValueFactory < Integer > valueFactory =
-                    new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
-            resinSpinner.setValueFactory(valueFactory);
+            resinSpinner.getValueFactory().setValue(1);
 
         } else {
             throw new IllegalArgumentException("Error in generating ecoScore");
         }
-        System.out.println("ZZZ" + ecoScoreLabel.getText());
+
         return ecoScoreLabel.getText();
     }
 
-
+    /**
+     * This is responsible for generating the proper ValueFactories, setting the values for the ResinID Spinner and
+     * the Material ComboBox
+     * This is also checking for action changes using Lambdas
+     * @param location
+     * @param resources
+     */
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -398,29 +461,25 @@ public class addItemController implements Initializable {
         SpinnerValueFactory < Integer > valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 7);
         resinSpinner.setValueFactory(valueFactory);
-        /*
 
-        disposalComboBox.getItems().addAll("Recycle", "Garbage", "Local Disposal Facility");*/
-        // Validation for Resin Spinner
 
         TextField resinEditor = resinSpinner.getEditor();
 
         resinEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
-                System.out.printf("Old Resin ID: %s New Resin ID: %s%n", oldValue, newValue);
+
         try {
             Integer.parseInt(newValue); //Checks to see if it's an int
             materialLoader(Integer.parseInt(newValue)); // If so, then I can pass this new Value into a function that will change the material
-            if(disposalComboBox.getValue() != null) {
+            if (disposalComboBox.getValue() != null) {
                 commentGenerator(resinSpinner.getValue(), disposalComboBox.getValue(), materialLabel.getText());
 
-            }
-            else  {
-                System.out.println("S");
+            } else {
+
             }
         } catch (NumberFormatException e) {
             resinEditor.setText(oldValue);
-            objectLabel.setTextFill(RED);
-            objectLabel.setText("Only whole numbers are allowed!");
+            infoLabel.setTextFill(RED);
+            infoLabel.setText("Only whole numbers are allowed!");
         }
 
         resinSpinner.setEditable(true);
@@ -430,19 +489,17 @@ public class addItemController implements Initializable {
         TextField disposalEditor = disposalComboBox.getEditor();
 
         disposalEditor.textProperty().addListener((observableValue, oldValue, newValue) -> {
-                System.out.printf("Old Disposal Method: %s, New Disposal Method: %s%n", oldValue, newValue);
 
-        String tossValue = newValue;
         try {
             disposalComboBox.setEditable(true);
-            System.out.println(resinSpinner.getValue() + newValue + materialLabel.getText()); // Need to check to see when Resin and Disposal are Blank
+
             commentGenerator(resinSpinner.getValue(), newValue, materialLabel.getText());
-            //ecoScoreGeneration(resinSpinner.getValue(), newValue);
+
 
         } catch (IllegalArgumentException e) {
             disposalComboBox.setValue(oldValue);
-            objectLabel.setTextFill(RED);
-            objectLabel.setText("Only proper disposal methods allowed!");
+            infoLabel.setTextFill(RED);
+            infoLabel.setText("Only proper disposal methods allowed!");
         }
         disposalComboBox.setEditable(true);
 

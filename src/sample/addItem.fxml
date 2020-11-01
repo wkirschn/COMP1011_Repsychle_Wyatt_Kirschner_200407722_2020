@@ -23,15 +23,15 @@
          <children>
             <VBox alignment="CENTER" layoutX="1.0" layoutY="-1.0" prefHeight="608.0" prefWidth="745.0">
                <children>
-                  <ImageView fx:id="logoImageView" fitHeight="112.0" fitWidth="252.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="logoImageView" fitHeight="83.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/Copy%20of%20Copy%20of%20Re%20Psychle.png" />
+                        <Image url="@img/RePsychle%20Logo.png" />
                      </image>
                      <VBox.margin>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Label fx:id="addItemLabel" prefHeight="18.0" prefWidth="170.0" text="Add an Item to the Database">
+                  <Label prefHeight="20.0" prefWidth="183.0" stylesheets="@../stylesheet.css" text="Add an Item to the Database">
                      <font>
                         <Font name="Calibri Bold" size="22.0" />
                      </font>
@@ -42,68 +42,72 @@
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="348.0" minWidth="10.0" prefWidth="188.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="53.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="96.0" minHeight="8.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="100.0" minHeight="6.0" prefHeight="55.0" vgrow="SOMETIMES" />
+                      <RowConstraints />
+                      <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="96.0" minHeight="8.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="100.0" minHeight="6.0" prefHeight="39.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="160.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Brand Name" textFill="#0d0d0d">
+                        <Label text="Brand Name" textFill="#0d0d0d" GridPane.rowIndex="1">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <Label text="Product Name" textFill="#0d0d0d" GridPane.rowIndex="1">
+                        <Label text="Product Name" textFill="#0d0d0d" GridPane.rowIndex="2">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <Label text="Resin ID" textFill="#0d0d0d" GridPane.rowIndex="2">
+                        <Label text="Resin ID" textFill="#0d0d0d" GridPane.rowIndex="3">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <Label text="Material" GridPane.rowIndex="3">
+                        <Label text="Material" GridPane.rowIndex="4">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <Label text="Disposal" GridPane.rowIndex="4">
+                        <Label text="Disposal" GridPane.rowIndex="5">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <Label text="Comment" GridPane.rowIndex="5">
+                        <Label text="Comment" GridPane.rowIndex="6">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="brandNameTextField" GridPane.columnIndex="1" />
-                        <TextField fx:id="productNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Spinner fx:id="resinSpinner" prefHeight="25.0" prefWidth="339.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="disposalComboBox" prefHeight="25.0" prefWidth="341.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="EcoScore" GridPane.rowIndex="6">
+                        <TextField fx:id="brandNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="productNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Spinner fx:id="resinSpinner" prefHeight="25.0" prefWidth="339.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="disposalComboBox" prefHeight="25.0" prefWidth="341.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="EcoScore" GridPane.rowIndex="7">
                            <font>
                               <Font name="Calibri" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="materialLabel" text="Based on Resin ID" textFill="#da6666" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Label fx:id="materialLabel" text="Based on Resin ID" textFill="#da6666" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font name="Calibri Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="ecoScoreLabel" text="Very Low / Low / Medium / High / Very High" textFill="#da6666" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <Label fx:id="ecoScoreLabel" text="Very Low / Low / Medium / High / Very High" textFill="#da6666" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
                               <Font name="Calibri Bold" size="16.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="commentLabel" prefHeight="176.0" prefWidth="335.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <TextArea fx:id="commentLabel" prefHeight="176.0" prefWidth="335.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <font>
                               <Font name="Calibri Bold" size="13.0" />
                            </font>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                         </TextArea>
                      </children>
                      <opaqueInsets>
@@ -112,6 +116,9 @@
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                   </GridPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="112.0" prefWidth="745.0">
                      <children>
