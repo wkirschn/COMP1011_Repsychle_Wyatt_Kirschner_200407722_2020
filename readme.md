@@ -47,7 +47,7 @@
 
   
 
-<h1  class="text-center"><img  src="/srcsample/img/RePsychle Logo.png" />
+<h1  class="text-center"><img  src="/src/sample/img/RePsychle Logo.png" />
 
 Wyatt Kirschner - COMP1011 - A1 - 200407722</h1>
 
